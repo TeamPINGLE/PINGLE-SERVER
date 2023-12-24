@@ -28,6 +28,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// deploy
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
 tasks.named('bootBuildImage') {
