@@ -21,5 +21,6 @@ public class Team extends BaseTimeEntity {
 
     private String code;
 
+    @Enumerated(EnumType.STRING)
     private TCategory category;
 }
