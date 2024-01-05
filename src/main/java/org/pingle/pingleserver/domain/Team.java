@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.pingle.pingleserver.domain.enums.TCategory;
+import org.pingle.pingleserver.domain.enums.TKeyword;
 
 @Entity
 @Getter
@@ -22,5 +22,5 @@ public class Team extends BaseTimeEntity {
     private String code;
 
     @Enumerated(EnumType.STRING)
-    private TCategory category;
+    private TKeyword keyword;
 }

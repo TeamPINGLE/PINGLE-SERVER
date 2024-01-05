@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public enum TRole {
-    TOWNER("owner"), TPARTICIPANT("participant");
+    OWNER("owner"), PARTICIPANT("participant");
 
     private final String value;
 }

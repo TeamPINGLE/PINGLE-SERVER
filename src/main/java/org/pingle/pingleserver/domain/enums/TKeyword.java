@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public enum TCategory {
+public enum TKeyword {
     CIRCLE("연합동아리");
 
     private final String value;
