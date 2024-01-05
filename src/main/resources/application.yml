@@ -20,3 +20,7 @@ jwt:
   secret-key: ${JWT_SECRET_KEY}
   access-token-expire-period: 1800000 # 30분
   refresh-token-expire-period: 1209600000 # 2주
+
+logging:
+  level:
+    org.springframework.security: DEBUG
