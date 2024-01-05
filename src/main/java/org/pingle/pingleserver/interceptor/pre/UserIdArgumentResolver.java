@@ -30,7 +30,7 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
                                   WebDataBinderFactory binderFactory) {
         final Principal principal = webRequest.getUserPrincipal();
         if (principal == null) {
-            throw new BusinessException(ErrorMessage.NO_SUCH_USER);
+            throw new BusinessException(ErrorMessage.INVALID_JWT_TOKEN);
         }
         return Long.valueOf(principal.getName());
     }
