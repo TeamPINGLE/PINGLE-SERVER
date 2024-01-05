@@ -27,4 +27,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(e.getHttpStatusCode())
                 .body(ApiResponse.fail(e.getErrorMessage()));
     }
+//    @ExceptionHandler(RestClientResponseException.class)
+//    public ResponseEntity<ApiResponse<?>> handleRestClientResponseException(RestClientResponseException e) {
+//        if (e.getStatusCode().value() == 400) {
+//            return ResponseEntity.status(e.getStatusCode().value()).body(ApiResponse.fail(ErrorMessage.INVALID_PARAMETER_ERROR));
+//
+//        }
+//
+//        return ResponseEntity.status(e.getStatusCode().value()).body(ApiResponse.fail(ErrorMessage.NAVER_SERVER_ERROR));
+//    }
 }
