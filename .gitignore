@@ -37,6 +37,8 @@ out/
 .vscode/
 
 application-secret.properties
+application-local.yml
+application-dev.yml
 
 ### Java ###
 # Compiled class file
