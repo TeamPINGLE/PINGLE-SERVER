@@ -30,7 +30,9 @@ public class AuthService {
     public JwtTokenResponse login(String providerToken, LoginRequest request) {
         SocialInfoDto socialInfo = getSocialInfo(request, providerToken);
         User user = loadOrCreateUser(request.provider(), socialInfo);
-        return jwtUtil.generateTokens(user.getId(), user.getRole());
+        JwtTokenResponse jwtTokenResponse = jwtUtil.generateTokens(user.getId(), user.getRole());
+        user.updateRefreshToken(jwtTokenResponse.refreshToken());
+        return jwtTokenResponse;
     }
 
     private SocialInfoDto getSocialInfo(LoginRequest request, String providerToken){
