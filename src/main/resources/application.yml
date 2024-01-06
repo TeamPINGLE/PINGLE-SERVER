@@ -1,27 +1,13 @@
+---
+
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DATABASE_ENDPOINT_URL}:3306/${DATABASE_NAME}?serverTimezone=UTC&characterEncoding=UTF-8
-    username: ${DATABASE_USER}
-    password: ${DATABASE_PASSWORD}
+  profiles:
+    active: local
 
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-        show_sql: true
-  config:
-    import: application-secret.properties
+---
 
-jwt:
-  secret-key: ${JWT_SECRET_KEY}
-  access-token-expire-period: 1800000 # 30분
-  refresh-token-expire-period: 1209600000 # 2주
+spring:
+  profiles:
+    active: dev
 
-logging:
-  level:
-    org.springframework.security: DEBUG
-
+---
