@@ -8,11 +8,13 @@ import org.pingle.pingleserver.dto.response.JwtTokenResponse;
 import org.pingle.pingleserver.utils.JwtUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/test")
 public class TestController {
 
     private final JwtUtil jwtUtil;

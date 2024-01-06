@@ -1,4 +1,8 @@
 spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources.add-mappings: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${DATABASE_ENDPOINT_URL}:3306/${DATABASE_NAME}?serverTimezone=UTC&characterEncoding=UTF-8
@@ -24,3 +28,4 @@ jwt:
 logging:
   level:
     org.springframework.security: DEBUG
+

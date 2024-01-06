@@ -21,9 +21,9 @@ public class SecurityConfig {
     private final CustomJwtAuthenticationEntryPoint customJwtAuthenticationEntryPoint;
 
     private static final String[] AUTH_WHITELIST = {
-            "v1/auth/login",
-            "v1/auth/reissue",
-            "/token",
+            "/v1/auth/login",
+            "/v1/auth/reissue",
+            "/test/**",
             "/api-docs.html",
             "/api-docs/**",
             "/swagger-ui/**"
