@@ -23,4 +23,10 @@ public class AuthController {
             @Valid @RequestBody LoginRequest request){
         return ApiResponse.success(SuccessMessage.OK, authService.login(providerToken, request));
     }
+
+    @PostMapping("/reissue")
+    public ApiResponse<JwtTokenResponse> reissue(
+            @Valid @RequestBody ReissueRequest request){
+        return ApiResponse.success(SuccessMessage.OK, authService.reissue(request));
+    }
 }
