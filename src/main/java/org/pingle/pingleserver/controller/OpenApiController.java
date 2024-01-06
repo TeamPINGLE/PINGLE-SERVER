@@ -17,10 +17,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OpenApiController {
 
-    private final NaverUtil client;
+    private final NaverUtil naverUtil;
 
     @GetMapping("/location")
     public ApiResponse<List<LocationResponse>> getLocationInfo(@RequestParam(name = "search") String location) {
-        return ApiResponse.success(SuccessMessage.OK, client.getLocationInfo(location));
+        return ApiResponse.success(SuccessMessage.OK, naverUtil.getLocationInfo(location));
     }
 }
