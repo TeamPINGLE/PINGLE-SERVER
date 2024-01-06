@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -27,6 +28,13 @@ public class GlobalExceptionHandler {
         log.error("handlerMethodArgumentNotValidException() in GlobalExceptionHandler throw MethodArgumentNotValidException : {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.fail(ErrorMessage.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(value = {MissingRequestHeaderException.class})
+    public ResponseEntity<ApiResponse<?>> handlerMissingRequestHeaderException(Exception e) {
+        log.error("handlerMissingRequestHeaderException() in GlobalExceptionHandler throw MissingRequestHeaderException : {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.fail(ErrorMessage.MISSING_REQUIRED_HEADER));
     }
 
     @ExceptionHandler(BusinessException.class)
