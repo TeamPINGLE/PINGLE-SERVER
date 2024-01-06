@@ -1,5 +1,6 @@
 package org.pingle.pingleserver.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.dto.common.ApiResponse;
 import org.pingle.pingleserver.dto.request.LoginRequest;
@@ -18,7 +19,7 @@ public class AuthController {
     @PostMapping("/login")
     public ApiResponse<JwtTokenResponse> login(
             @RequestHeader("Provider-Token") String providerToken,
-            @RequestBody LoginRequest request){
+            @Valid @RequestBody LoginRequest request){
         return ApiResponse.success(SuccessMessage.OK, authService.login(providerToken, request));
     }
 }
