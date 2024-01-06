@@ -52,6 +52,7 @@ public class AuthService {
                     .serialId(socialInfo.serialId())
                     .email(socialInfo.email())
                     .name(socialInfo.name())
+                    .role(URole.USER)
                     .build();
             userRepository.save(newUser);
         }

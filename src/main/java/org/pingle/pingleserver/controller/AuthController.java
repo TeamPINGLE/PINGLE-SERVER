@@ -9,7 +9,7 @@ import org.pingle.pingleserver.service.AuthService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
