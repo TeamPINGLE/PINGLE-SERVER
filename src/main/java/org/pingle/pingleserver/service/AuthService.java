@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.domain.User;
 import org.pingle.pingleserver.domain.enums.Provider;
 import org.pingle.pingleserver.domain.enums.URole;
+import org.pingle.pingleserver.dto.request.ReissueRequest;
 import org.pingle.pingleserver.oauth.dto.SocialInfoDto;
 import org.pingle.pingleserver.dto.request.LoginRequest;
 import org.pingle.pingleserver.dto.response.JwtTokenResponse;
@@ -38,6 +39,13 @@ public class AuthService {
         User user = userRepository.findByRefreshTokenAndIsDeleted(request.refreshToken(), false)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND_ERROR));
         return generateTokensWithUpdateRefreshToken(user);
+    }
+
+    @Transactional
+    public void logout(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND_ERROR));
+        user.updateRefreshToken(null);
     }
 
     private SocialInfoDto getSocialInfo(LoginRequest request, String providerToken){
