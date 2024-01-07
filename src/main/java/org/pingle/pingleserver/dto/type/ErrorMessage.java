@@ -18,9 +18,11 @@ public enum ErrorMessage {
     UNSUPPORTED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "지원하지 않는 JWT 토큰입니다."),
     JWT_TOKEN_IS_EMPTY(HttpStatus.UNAUTHORIZED, "JWT 토큰이 비어있습니다."),
     // Invalid Argument Error 400
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
+    ALREADY_REGISTERED_USER(HttpStatus.BAD_REQUEST, "이미 가입된 사용자입니다."),
+    INVALID_GROUP_CODE(HttpStatus.BAD_REQUEST, "유효하지 않은 그룹 코드입니다."),
     INVALID_HEADER_ERROR(HttpStatus.BAD_REQUEST, "유효하지 않은 헤더입니다."),
     INVALID_PROVIDER_ERROR(HttpStatus.BAD_REQUEST, "유효하지 않은 소셜 플랫폼입니다."),
-    BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     MISSING_REQUIRED_HEADER(HttpStatus.BAD_REQUEST, "필수 헤더가 누락되었습니다."),
     // Authorization Error 401
     TOKEN_MALFORMED_ERROR(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
