@@ -3,9 +3,7 @@ package org.pingle.pingleserver.dto.request;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-public class NaverLocationRequest {
-
-    private String query = "";
+public record NaverLocationRequest(String query, int display, int start, String sort) {
 
     private static final int DISPLAY = 5;
 
@@ -13,8 +11,8 @@ public class NaverLocationRequest {
 
     private static final String SORT = "random";
 
-    public NaverLocationRequest(String query) {
-        this.query = query;
+    public static NaverLocationRequest of(String query) {
+        return new NaverLocationRequest(query, DISPLAY, START, SORT);
     }
 
     public MultiValueMap<String, String> toMap() {

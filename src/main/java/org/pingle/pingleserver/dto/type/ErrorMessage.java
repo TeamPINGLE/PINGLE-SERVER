@@ -13,10 +13,10 @@ public enum ErrorMessage {
     INVALID_PARAMETER_ERROR(HttpStatus.BAD_REQUEST, "유효하지 않은 파라미터입니다."),
     // Method Not Allowed Error 405
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP 메소드입니다."),
-    // Internal Server Error 500
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
     // OpenApi Server Error 500
-    NAVER_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "네이버 서버 오류입니다.");
+    NAVER_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "네이버 서버 오류입니다."),
+    // Internal Server Error 500
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다.");
 
     private final HttpStatus status;
     private final String message;

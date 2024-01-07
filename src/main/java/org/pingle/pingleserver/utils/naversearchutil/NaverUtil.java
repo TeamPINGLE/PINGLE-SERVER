@@ -32,12 +32,12 @@ public class NaverUtil {
 
     public List<LocationResponse> getLocationInfo(String location) {
 
-        NaverLocationResponse naverLocationResponse = locationSearch(new NaverLocationRequest(location));
+        NaverLocationResponse naverLocationResponse = locationSearch(NaverLocationRequest.of(location));
 
         return convertResponse(naverLocationResponse);
     }
 
-    public NaverLocationResponse locationSearch(NaverLocationRequest request) {
+    private NaverLocationResponse locationSearch(NaverLocationRequest request) {
         URI uri = UriComponentsBuilder
                 .fromUriString(naverLocationSearchUrl)
                 .queryParams(request.toMap())
