@@ -14,7 +14,7 @@ public class KakaoLoginService {
         KakaoUserDto kakaoUserdto = kakaoFeignClient.getUserInformation("Bearer " + providerToken);
         return SocialInfoDto.of(
                 kakaoUserdto.id().toString(),
-                kakaoUserdto.kakaoAccount().kakaoUserProfile().email(),
+                kakaoUserdto.kakaoAccount().email(),
                 kakaoUserdto.kakaoAccount().kakaoUserProfile().nickname());
     }
 }
