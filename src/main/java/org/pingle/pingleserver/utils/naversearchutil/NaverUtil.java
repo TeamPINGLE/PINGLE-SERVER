@@ -65,7 +65,7 @@ public class NaverUtil {
         List<NaverLocationResponse.SearchLocationItem> items = response.items();
         List<LocationResponse> responseList = items
                 .stream()
-                .map(item -> new LocationResponse(convertX(item.getMapx()), convertY(item.getMapy()), trim(item.getTitle()), trim(item.getAddress())))
+                .map(item -> new LocationResponse(convertX(item.getMapx()), convertY(item.getMapy()), trim(item.getTitle()), trim(item.getAddress()), trim(item.getRoadAddress())))
                 .collect(Collectors.toList());
 
         return responseList;
