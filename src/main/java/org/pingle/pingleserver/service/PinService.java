@@ -25,7 +25,7 @@ public class PinService {
 
     public List<PinResponse> getPinListFilterByCategory(Long teamId, MCategory category) {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_RESOURCE));
-        List<Pin> pinList = pinRepository.findAllByTeam(team);//현재 약속중 category갖는 핀만 갖고 있음
+        List<Pin> pinList = pinRepository.findAllByTeam(team);
         if(category == null) return pinList.stream().map(PinResponse::of).toList();
         return pinList.stream().filter(pin -> checkMeetingsCategoryOfPin(pin, category)).map(PinResponse::of).toList();
     }
