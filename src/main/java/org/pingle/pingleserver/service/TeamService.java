@@ -56,7 +56,7 @@ public class TeamService {
         }
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.NO_SUCH_USER));
-        Boolean isRegistered = userTeamRepository.existsByUserAndTeam(user, team);
+        boolean isRegistered = userTeamRepository.existsByUserAndTeam(user, team);
         if (isRegistered) {
             throw new BusinessException(ErrorMessage.ALREADY_REGISTERED_USER);
         }
