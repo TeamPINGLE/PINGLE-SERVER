@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,6 +18,9 @@ public class Pin extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
+
+    @OneToMany(mappedBy = "pin")
+    private List<Meeting> meetingList;
 
     @Embedded
     private Point point;
