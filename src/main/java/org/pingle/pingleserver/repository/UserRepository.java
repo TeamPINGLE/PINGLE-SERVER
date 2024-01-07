@@ -11,4 +11,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByProviderAndSerialIdAndIsDeleted(Provider provider, String serialId, Boolean deleted);
     Optional<User> findByProviderAndSerialIdAndIsDeleted(Provider provider, String serialId, Boolean deleted);
 
+    Optional<User> findByIdAndIsDeleted(Long id, Boolean deleted);
+
 }
