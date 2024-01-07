@@ -1,5 +1,5 @@
 ## Related Issue 📌
-close #<issue_num>
+- close #<issue_num>
 
 ## Description ✔️
 - 
