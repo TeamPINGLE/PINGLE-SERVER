@@ -18,17 +18,14 @@ import java.util.stream.Collectors;
 @Component
 public class NaverUtil {
 
-    @Value("${CLIENT_ID}")
+    @Value("${naver.client-id}")
     private String naverClientId;
 
-    @Value("${CLIENT_SECRET}")
+    @Value("${naver.client-secret}")
     private String naverSecret;
 
-    @Value("${NAVER_SEARCH_URL}")
+    @Value("${naver.location-search-url}")
     private String naverLocationSearchUrl;
-
-
-
 
     public List<LocationResponse> getLocationInfo(String location) {
 
