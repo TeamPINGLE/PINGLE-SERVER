@@ -23,13 +23,18 @@ public enum ErrorMessage {
     INVALID_PROVIDER_ERROR(HttpStatus.BAD_REQUEST, "유효하지 않은 소셜 플랫폼입니다."),
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     MISSING_REQUIRED_HEADER(HttpStatus.BAD_REQUEST, "필수 헤더가 누락되었습니다."),
+    NO_SUCH_PIN(HttpStatus.BAD_REQUEST, "해당하는 핀이 없습니다."),
+    NO_SUCH_MEETING(HttpStatus.BAD_REQUEST, "해당하는 미팅이 없습니다." ),
     // Authorization Error 401
     TOKEN_MALFORMED_ERROR(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     UNAUTHORIZED_ERROR(HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았거나 유효하지 않습니다."),
     NO_SUCH_USER(HttpStatus.UNAUTHORIZED, "존재하지 않는 사용자입니다."),
+    // Permission Denied 403
+    GROUP_PERMISSION_DENIED(HttpStatus.FORBIDDEN, "해당 사용자는 그룹에 속해 있지 않습니다."),
     // Not Found Error 404
     USER_NOT_FOUND_ERROR(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     NOT_FOUND_END_POINT(HttpStatus.NOT_FOUND, "존재하지 않는 API입니다."),
+    RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "리소스가 없습니다"),
     // Method Not Allowed Error 405
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP 메소드입니다."),
     // OpenApi Server Error 500
