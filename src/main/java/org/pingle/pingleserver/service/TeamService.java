@@ -2,7 +2,11 @@ package org.pingle.pingleserver.service;
 
 import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.domain.Team;
+import org.pingle.pingleserver.dto.response.SelectedTeamResponse;
+import org.pingle.pingleserver.dto.response.TeamDetailDto;
 import org.pingle.pingleserver.dto.response.TeamSearchResultResponse;
+import org.pingle.pingleserver.dto.type.ErrorMessage;
+import org.pingle.pingleserver.exception.BusinessException;
 import org.pingle.pingleserver.repository.TeamRepository;
 import org.pingle.pingleserver.utils.CustomSearchUtil;
 import org.springframework.stereotype.Service;
@@ -26,5 +30,11 @@ public class TeamService {
                 .sorted(Comparator.comparingInt((Team team) -> customSearchUtil.calculateScoreIgnoreCase(team.getName(), teamName)))
                 .map(TeamSearchResultResponse::of)
                 .collect(Collectors.toList());
+    }
+
+    public SelectedTeamResponse getTeam(Long teamId) {
+        TeamDetailDto team = teamRepository.findTeamDetailsWithCounts(teamId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_RESOURCE));
+        return SelectedTeamResponse.of(team.team(), team.meetingCount(), team.participantCount());
     }
 }

@@ -27,6 +27,7 @@ public enum ErrorMessage {
     UNAUTHORIZED_ERROR(HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았거나 유효하지 않습니다."),
     NO_SUCH_USER(HttpStatus.UNAUTHORIZED, "존재하지 않는 사용자입니다."),
     // Not Found Error 404
+    NOT_FOUND_RESOURCE(HttpStatus.NOT_FOUND, "해당 리소스가 존재하지 않습니다."),
     USER_NOT_FOUND_ERROR(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     NOT_FOUND_END_POINT(HttpStatus.NOT_FOUND, "존재하지 않는 API입니다."),
     // Method Not Allowed Error 405
