@@ -37,14 +37,14 @@ public class AuthService {
     @Transactional
     public JwtTokenResponse reissue(ReissueRequest request) {
         User user = userRepository.findByRefreshTokenAndIsDeleted(request.refreshToken(), false)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
         return generateTokensWithUpdateRefreshToken(user);
     }
 
     @Transactional
     public void logout(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
         user.updateRefreshToken(null);
     }
 
@@ -73,7 +73,7 @@ public class AuthService {
         }
 
         return userRepository.findByProviderAndSerialIdAndIsDeleted(provider, socialInfo.serialId(), false)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
     }
 
     private JwtTokenResponse generateTokensWithUpdateRefreshToken(User user){
