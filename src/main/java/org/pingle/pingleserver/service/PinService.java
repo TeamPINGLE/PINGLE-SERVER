@@ -41,15 +41,6 @@ public class PinService {
         return pinList.stream().filter(pin -> checkMeetingsCategoryOfPin(pin, category)).map(PinResponse::of).toList();
     }
 
-    private boolean checkMeetingsCategoryOfPin(Pin pin, MCategory category) {
-        List<Meeting> meetingList = pin.getMeetingList();
-        for(Meeting meeting : meetingList) {
-            if(meeting.getCategory().getValue().equals(category.getValue()))
-                return true;
-        }
-        return false;
-    }
-
     public List<MeetingResponse> getMeetingDetailList(Long userId, Long pinId) {
         Pin pin = pinRepository.findById(pinId).orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_RESOURCE));
         Comparator<Meeting> comparator = Comparator.comparing(Meeting::getStartAt);
@@ -73,6 +64,15 @@ public class PinService {
                                             .build());
         }
         return responseList;
+    }
+
+    private boolean checkMeetingsCategoryOfPin(Pin pin, MCategory category) {
+        List<Meeting> meetingList = pin.getMeetingList();
+        for(Meeting meeting : meetingList) {
+            if(meeting.getCategory().getValue().equals(category.getValue()))
+                return true;
+        }
+        return false;
     }
 
     private String getOwnerName(Meeting meeting) {
