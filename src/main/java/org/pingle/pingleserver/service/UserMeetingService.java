@@ -21,6 +21,7 @@ public class UserMeetingService {
     private final TeamRepository teamRepository;
     private final UserMeetingRepository userMeetingRepository;
     private final UserTeamRepository userTeamRepository;
+    private final MeetingRepository meetingRepository;
 
     @Transactional
     public Long addOwnerToMeeting(Long userId, Meeting meeting) {
