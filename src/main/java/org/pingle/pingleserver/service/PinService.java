@@ -22,7 +22,7 @@ public class PinService {
 
     @Transactional
     public Pin verifyAndReturnPin(MeetingRequest request, Long groupId) {
-        Team team = teamRepository.findById(groupId).orElseThrow(() -> new BusinessException(ErrorMessage.RESOURCE_NOT_FOUND));
+        Team team = teamRepository.findById(groupId).orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_RESOURCE));
         if(!exist(new Point(request.x(), request.y()))) {
              return pinRepository.save(Pin.builder()
                     .address(new Address(request.roadAddress(), request.address()))
