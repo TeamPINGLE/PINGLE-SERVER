@@ -112,6 +112,7 @@ public class PinService {
     private String getTimeFromDateTime(LocalDateTime localDateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         return localDateTime.format(formatter);
+    }
 
     private boolean exist(Point point) {
         return pinRepository.existsByPoint(point);
