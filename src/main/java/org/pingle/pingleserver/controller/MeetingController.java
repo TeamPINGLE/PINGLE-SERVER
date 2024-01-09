@@ -1,7 +1,9 @@
 package org.pingle.pingleserver.controller;
 
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.annotation.GUserId;
 import org.pingle.pingleserver.domain.Meeting;
 import org.pingle.pingleserver.domain.Pin;
@@ -10,6 +12,7 @@ import org.pingle.pingleserver.dto.request.MeetingRequest;
 import org.pingle.pingleserver.dto.type.SuccessMessage;
 import org.pingle.pingleserver.service.MeetingService;
 import org.pingle.pingleserver.service.PinService;
+
 import org.pingle.pingleserver.service.UserMeetingService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +26,6 @@ public class MeetingController {
     private final UserMeetingService userMeetingService;
     private final PinService pinService;
 
-
     @PostMapping
     public ApiResponse<?> createMeeting(@Valid @RequestBody MeetingRequest request, @GUserId Long userId,
                                         @RequestHeader(GROUP_ID) Long groupId) {
@@ -34,4 +36,15 @@ public class MeetingController {
         return ApiResponse.success(SuccessMessage.CREATED);
     }
 
+    @PostMapping("/{meetingId}/join")
+    public ApiResponse<?> participateMeeting (@UserId Long userId, @PathVariable("meetingId") Long meetingId) {
+        Long userMeetingId = userMeetingService.participateMeeting(userId, meetingId);
+        return ApiResponse.success(SuccessMessage.CREATED);
+    }
+
+    @DeleteMapping("/{meetingId}/cancel")
+    public ApiResponse<?> cancelMeeting (@UserId Long userId, @PathVariable("meetingId") Long meetingId) {
+        Long cancelledId = userMeetingService.cancelMeeting(userId, meetingId);
+        return ApiResponse.success(SuccessMessage.OK);
+    }
 }
