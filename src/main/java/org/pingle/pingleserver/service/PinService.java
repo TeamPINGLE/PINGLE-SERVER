@@ -10,6 +10,9 @@ import org.pingle.pingleserver.domain.enums.MCategory;
 import org.pingle.pingleserver.domain.enums.MRole;
 import org.pingle.pingleserver.dto.reponse.MeetingResponse;
 import org.pingle.pingleserver.dto.reponse.PinResponse;
+import org.pingle.pingleserver.domain.Address;
+import org.pingle.pingleserver.domain.Point;
+import org.pingle.pingleserver.dto.request.MeetingRequest;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
 import org.pingle.pingleserver.exception.BusinessException;
 import org.pingle.pingleserver.repository.PinRepository;
@@ -66,6 +69,20 @@ public class PinService {
         return responseList;
     }
 
+    @Transactional
+    public Pin verifyAndReturnPin(MeetingRequest request, Long groupId) {
+        Team team = teamRepository.findById(groupId).orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_RESOURCE));
+        if(!exist(new Point(request.x(), request.y()))) {
+             return pinRepository.save(Pin.builder()
+                    .address(new Address(request.roadAddress(), request.address()))
+                    .name(request.location())
+                    .point(new Point(request.x(), request.y()))
+                    .team(team)
+                    .build());
+        }
+        return pinRepository.findByPoint(new Point(request.x(), request.y()));
+    }
+  
     private boolean checkMeetingsCategoryOfPin(Pin pin, MCategory category) {
         List<Meeting> meetingList = pin.getMeetingList();
         for(Meeting meeting : meetingList) {
@@ -95,5 +112,8 @@ public class PinService {
     private String getTimeFromDateTime(LocalDateTime localDateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         return localDateTime.format(formatter);
+
+    private boolean exist(Point point) {
+        return pinRepository.existsByPoint(point);
     }
 }
