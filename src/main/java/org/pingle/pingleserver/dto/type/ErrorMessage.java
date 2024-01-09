@@ -19,6 +19,7 @@ public enum ErrorMessage {
     JWT_TOKEN_IS_EMPTY(HttpStatus.UNAUTHORIZED, "JWT 토큰이 비어있습니다."),
     // Invalid Argument Error 400
     INVALID_HEADER_ERROR(HttpStatus.BAD_REQUEST, "유효하지 않은 헤더입니다."),
+    INVALID_PARAMETER_ERROR(HttpStatus.BAD_REQUEST, "유효하지 않은 파라미터입니다."),
     INVALID_PROVIDER_ERROR(HttpStatus.BAD_REQUEST, "유효하지 않은 소셜 플랫폼입니다."),
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     MISSING_REQUIRED_HEADER(HttpStatus.BAD_REQUEST, "필수 헤더가 누락되었습니다."),
@@ -29,8 +30,13 @@ public enum ErrorMessage {
     // Not Found Error 404
     USER_NOT_FOUND_ERROR(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     NOT_FOUND_END_POINT(HttpStatus.NOT_FOUND, "존재하지 않는 API입니다."),
+    NOT_FOUND_RESOURCE(HttpStatus.NOT_FOUND, "해당 리소스가 존재하지 않습니다."),
     // Method Not Allowed Error 405
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP 메소드입니다."),
+    // Conflict Error 409
+    RESOURCE_CONFLICT(HttpStatus.CONFLICT, "리소스 충돌이 일어났습니다."),
+    // OpenApi Server Error 500
+    NAVER_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "네이버 서버 오류입니다."),
     // Internal Server Error 500
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다.");
 
