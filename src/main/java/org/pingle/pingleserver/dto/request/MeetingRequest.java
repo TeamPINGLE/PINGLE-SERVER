@@ -2,6 +2,7 @@ package org.pingle.pingleserver.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.pingle.pingleserver.domain.enums.MCategory;
 
@@ -22,7 +23,7 @@ public record MeetingRequest(MCategory category,
                              String roadAddress,
                              @NotNull
                              String location,
-                             @Max(99)
+                             @Min(2)@Max(99)
                              Integer maxParticipants,
                              String chatLink) {
 }
