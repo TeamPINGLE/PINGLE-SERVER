@@ -36,7 +36,7 @@ public class UserMeetingService {
     //유저가 그룹에 있는지
     public void verifyUser(Long userId, Long groupId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new BusinessException(ErrorMessage.NO_SUCH_USER));
-        Team team = teamRepository.findById(groupId).orElseThrow(() -> new BusinessException(ErrorMessage.RESOURCE_NOT_FOUND));
+        Team team = teamRepository.findById(groupId).orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_RESOURCE));
         userTeamRepository.findByUserAndTeam(user, team).orElseThrow(() -> new BusinessException(ErrorMessage.GROUP_PERMISSION_DENIED));
     }
 
