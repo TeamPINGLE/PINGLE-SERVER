@@ -30,8 +30,11 @@ public enum ErrorMessage {
     // Not Found Error 404
     USER_NOT_FOUND_ERROR(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     NOT_FOUND_END_POINT(HttpStatus.NOT_FOUND, "존재하지 않는 API입니다."),
+    NOT_FOUND_RESOURCE(HttpStatus.NOT_FOUND, "해당 리소스가 존재하지 않습니다."),
     // Method Not Allowed Error 405
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP 메소드입니다."),
+    // Conflict Error 409
+    RESOURCE_CONFLICT(HttpStatus.CONFLICT, "리소스 충돌이 일어났습니다."),
     // OpenApi Server Error 500
     NAVER_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "네이버 서버 오류입니다."),
     // Internal Server Error 500

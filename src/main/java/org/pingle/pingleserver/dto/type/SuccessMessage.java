@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum SuccessMessage {
-    OK(HttpStatus.OK, "OK");
+    OK(HttpStatus.OK, "OK"),
+    CREATED(HttpStatus.CREATED, "CREATED");
 
     private final HttpStatus status;
     private final String message;
