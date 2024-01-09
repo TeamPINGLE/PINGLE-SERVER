@@ -26,5 +26,9 @@ public class UserMeeting extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private MRole meetingRole;
 
-
+    public UserMeeting(User user, Meeting meeting, MRole meetingRole) {
+        this.user = user;
+        this.meeting = meeting;
+        this.meetingRole = meetingRole;
+    }
 }
