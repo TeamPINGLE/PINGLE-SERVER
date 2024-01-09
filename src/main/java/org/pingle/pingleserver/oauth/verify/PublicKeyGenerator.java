@@ -1,7 +1,7 @@
 package org.pingle.pingleserver.oauth.verify;
 
 import org.pingle.pingleserver.dto.type.ErrorMessage;
-import org.pingle.pingleserver.exception.BusinessException;
+import org.pingle.pingleserver.exception.CustomException;
 import org.pingle.pingleserver.oauth.dto.ApplePublicKey;
 import org.pingle.pingleserver.oauth.dto.ApplePublicKeys;
 import org.springframework.stereotype.Component;
@@ -42,7 +42,7 @@ public class PublicKeyGenerator {
             KeyFactory keyFactory = KeyFactory.getInstance(publicKey.kty());
             return keyFactory.generatePublic(publicKeySpec);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException exception) {
-            throw new BusinessException(ErrorMessage.CREATE_PUBLIC_KEY_EXCEPTION);
+            throw new CustomException(ErrorMessage.CREATE_PUBLIC_KEY_EXCEPTION);
         }
     }
 }

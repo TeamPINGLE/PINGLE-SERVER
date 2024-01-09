@@ -11,7 +11,7 @@ import org.pingle.pingleserver.dto.response.TeamDetailDto;
 import org.pingle.pingleserver.dto.response.TeamRegistResponse;
 import org.pingle.pingleserver.dto.response.TeamSearchResultResponse;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
-import org.pingle.pingleserver.exception.BusinessException;
+import org.pingle.pingleserver.exception.CustomException;
 import org.pingle.pingleserver.repository.TeamRepository;
 import org.pingle.pingleserver.repository.UserRepository;
 import org.pingle.pingleserver.repository.UserTeamRepository;
@@ -43,22 +43,22 @@ public class TeamService {
 
     public SelectedTeamResponse getTeam(Long teamId) {
         TeamDetailDto team = teamRepository.findTeamDetailsWithCounts(teamId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_RESOURCE));
+                .orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_RESOURCE));
         return SelectedTeamResponse.of(team.team(), team.meetingCount(), team.participantCount());
     }
 
     @Transactional
     public TeamRegistResponse registTeam(Long userId, Long teamId, TeamRegisterRequest request) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_RESOURCE));
+                .orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_RESOURCE));
         if (!team.getCode().equals(request.code())) {
-            throw new BusinessException(ErrorMessage.INVALID_GROUP_CODE);
+            throw new CustomException(ErrorMessage.INVALID_GROUP_CODE);
         }
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.NO_SUCH_USER));
+                .orElseThrow(() -> new CustomException(ErrorMessage.NO_SUCH_USER));
         boolean isRegistered = userTeamRepository.existsByUserAndTeam(user, team);
         if (isRegistered) {
-            throw new BusinessException(ErrorMessage.ALREADY_REGISTERED_USER);
+            throw new CustomException(ErrorMessage.ALREADY_REGISTERED_USER);
         }
         UserTeam newUserTeam = UserTeam.builder()
                 .user(user)

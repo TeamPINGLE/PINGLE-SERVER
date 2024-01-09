@@ -14,7 +14,7 @@ import org.pingle.pingleserver.domain.Address;
 import org.pingle.pingleserver.domain.Point;
 import org.pingle.pingleserver.dto.request.MeetingRequest;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
-import org.pingle.pingleserver.exception.BusinessException;
+import org.pingle.pingleserver.exception.CustomException;
 import org.pingle.pingleserver.repository.PinRepository;
 import org.pingle.pingleserver.repository.TeamRepository;
 import org.pingle.pingleserver.repository.UserMeetingRepository;
@@ -38,14 +38,14 @@ public class PinService {
     private final UserMeetingRepository userMeetingRepository;
 
     public List<PinResponse> getPinListFilterByCategory(Long teamId, MCategory category) {
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_RESOURCE));
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_RESOURCE));
         List<Pin> pinList = pinRepository.findAllByTeam(team);
         if(category == null) return pinList.stream().map(PinResponse::of).toList();
         return pinList.stream().filter(pin -> checkMeetingsCategoryOfPin(pin, category)).map(PinResponse::of).toList();
     }
 
     public List<MeetingResponse> getMeetingDetailList(Long userId, Long pinId) {
-        Pin pin = pinRepository.findById(pinId).orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_RESOURCE));
+        Pin pin = pinRepository.findById(pinId).orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_RESOURCE));
         Comparator<Meeting> comparator = Comparator.comparing(Meeting::getStartAt);
         List<Meeting> meetingList = pin.getMeetingList();
         meetingList.sort(comparator);
@@ -71,7 +71,7 @@ public class PinService {
 
     @Transactional
     public Pin verifyAndReturnPin(MeetingRequest request, Long groupId) {
-        Team team = teamRepository.findById(groupId).orElseThrow(() -> new BusinessException(ErrorMessage.NOT_FOUND_RESOURCE));
+        Team team = teamRepository.findById(groupId).orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_RESOURCE));
         if(!exist(new Point(request.x(), request.y()))) {
              return pinRepository.save(Pin.builder()
                     .address(new Address(request.roadAddress(), request.address()))
@@ -93,7 +93,7 @@ public class PinService {
     }
 
     private String getOwnerName(Meeting meeting) {
-        UserMeeting userMeeting = userMeetingRepository.findByMeetingAndMeetingRole(meeting, MRole.OWNER).orElseThrow(() ->new BusinessException(ErrorMessage.NOT_FOUND_RESOURCE ));
+        UserMeeting userMeeting = userMeetingRepository.findByMeetingAndMeetingRole(meeting, MRole.OWNER).orElseThrow(() ->new CustomException(ErrorMessage.NOT_FOUND_RESOURCE ));
         return userMeeting.getUser().getName();
     }
 

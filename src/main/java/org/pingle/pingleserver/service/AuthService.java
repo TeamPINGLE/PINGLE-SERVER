@@ -9,7 +9,7 @@ import org.pingle.pingleserver.oauth.dto.SocialInfoDto;
 import org.pingle.pingleserver.dto.request.LoginRequest;
 import org.pingle.pingleserver.dto.response.JwtTokenResponse;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
-import org.pingle.pingleserver.exception.BusinessException;
+import org.pingle.pingleserver.exception.CustomException;
 import org.pingle.pingleserver.oauth.service.AppleLoginService;
 import org.pingle.pingleserver.oauth.service.KakaoLoginService;
 import org.pingle.pingleserver.repository.UserRepository;
@@ -37,14 +37,14 @@ public class AuthService {
     @Transactional
     public JwtTokenResponse reissue(ReissueRequest request) {
         User user = userRepository.findByRefreshTokenAndIsDeleted(request.refreshToken(), false)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND_ERROR));
         return generateTokensWithUpdateRefreshToken(user);
     }
 
     @Transactional
     public void logout(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND_ERROR));
         user.updateRefreshToken(null);
     }
 
@@ -54,7 +54,7 @@ public class AuthService {
         } else if (request.provider().toString().equals(Provider.KAKAO.toString())){
             return kakaoLoginService.getInfo(providerToken);
         } else {
-            throw new BusinessException(ErrorMessage.INVALID_PROVIDER_ERROR);
+            throw new CustomException(ErrorMessage.INVALID_PROVIDER_ERROR);
         }
     }
 
@@ -73,7 +73,7 @@ public class AuthService {
         }
 
         return userRepository.findByProviderAndSerialIdAndIsDeleted(provider, socialInfo.serialId(), false)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND_ERROR));
     }
 
     private JwtTokenResponse generateTokensWithUpdateRefreshToken(User user){

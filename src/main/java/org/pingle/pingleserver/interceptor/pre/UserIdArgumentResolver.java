@@ -3,7 +3,7 @@ package org.pingle.pingleserver.interceptor.pre;
 import lombok.extern.slf4j.Slf4j;
 import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
-import org.pingle.pingleserver.exception.BusinessException;
+import org.pingle.pingleserver.exception.CustomException;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -30,7 +30,7 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
                                   WebDataBinderFactory binderFactory) {
         final Principal principal = webRequest.getUserPrincipal();
         if (principal == null) {
-            throw new BusinessException(ErrorMessage.INVALID_JWT_TOKEN);
+            throw new CustomException(ErrorMessage.INVALID_JWT_TOKEN);
         }
         return Long.valueOf(principal.getName());
     }
