@@ -2,6 +2,7 @@ package org.pingle.pingleserver.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.pingle.pingleserver.domain.enums.TRole;
@@ -25,4 +26,11 @@ public class UserTeam extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private TRole teamRole;
+
+    @Builder
+    public UserTeam(User user, Team team, TRole teamRole) {
+        this.user = user;
+        this.team = team;
+        this.teamRole = teamRole;
+    }
 }

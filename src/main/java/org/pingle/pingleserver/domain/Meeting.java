@@ -2,6 +2,7 @@ package org.pingle.pingleserver.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.pingle.pingleserver.domain.enums.MCategory;
@@ -32,4 +33,15 @@ public class Meeting extends BaseTimeEntity {
     private LocalDateTime startAt;
 
     private LocalDateTime endAt;
+
+    @Builder
+    public Meeting(Pin pin, MCategory category, String name, Integer maxParticipants, String chatLink, LocalDateTime startAt, LocalDateTime endAt) {
+        this.pin = pin;
+        this.category = category;
+        this.name = name;
+        this.maxParticipants = maxParticipants;
+        this.chatLink = chatLink;
+        this.startAt = startAt;
+        this.endAt = endAt;
+    }
 }

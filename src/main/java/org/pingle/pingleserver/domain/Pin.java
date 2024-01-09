@@ -2,8 +2,11 @@ package org.pingle.pingleserver.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,6 +20,9 @@ public class Pin extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
 
+    @OneToMany(mappedBy = "pin")
+    private List<Meeting> meetingList;
+
     @Embedded
     private Point point;
 
@@ -24,4 +30,12 @@ public class Pin extends BaseTimeEntity {
     private Address address;
 
     private String name;
+
+    @Builder
+    public Pin(Team team, Point point, Address address, String name) {
+        this.team = team;
+        this.point = point;
+        this.address = address;
+        this.name = name;
+    }
 }
