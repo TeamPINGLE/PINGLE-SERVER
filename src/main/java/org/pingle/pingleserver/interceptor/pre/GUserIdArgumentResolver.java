@@ -3,7 +3,7 @@ package org.pingle.pingleserver.interceptor.pre;
 import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.annotation.GUserId;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
-import org.pingle.pingleserver.exception.BusinessException;
+import org.pingle.pingleserver.exception.CustomException;
 import org.pingle.pingleserver.service.UserMeetingService;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -33,11 +33,11 @@ public class GUserIdArgumentResolver implements HandlerMethodArgumentResolver {
                                   WebDataBinderFactory binderFactory) {
         final Principal principal = webRequest.getUserPrincipal();
         if (principal == null) {
-            throw new BusinessException(ErrorMessage.NO_SUCH_USER);
+            throw new CustomException(ErrorMessage.EMPTY_PRINCIPAL);
         }
 
         if (webRequest.getHeader("Group-Id") == null)
-            throw new BusinessException(ErrorMessage.INVALID_HEADER_ERROR);
+            throw new CustomException(ErrorMessage.INVALID_HEADER_ERROR);
         Long groupId = Long.valueOf(webRequest.getHeader("Group-Id"));
 
         userMeetingService.verifyUser(getIdFromPrincipal(principal), groupId);

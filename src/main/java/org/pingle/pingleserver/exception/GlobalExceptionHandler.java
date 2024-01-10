@@ -37,8 +37,8 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.fail(ErrorMessage.MISSING_REQUIRED_HEADER));
     }
 
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ApiResponse<?>> handleBusinessException(BusinessException e) {
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ApiResponse<?>> handleBusinessException(CustomException e) {
         log.error("handleException() in GlobalExceptionHandler throw BusinessException : {}", e.getErrorMessage());
         return ResponseEntity.status(e.getHttpStatusCode())
                 .body(ApiResponse.fail(e.getErrorMessage()));

@@ -4,10 +4,10 @@ import lombok.Getter;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
 
 @Getter
-public class BusinessException extends RuntimeException {
+public class CustomException extends RuntimeException {
     private final ErrorMessage errorMessage;
 
-    public BusinessException(ErrorMessage errorMessage) {
+    public CustomException(ErrorMessage errorMessage) {
         super(errorMessage.getMessage());
         this.errorMessage = errorMessage;
     }

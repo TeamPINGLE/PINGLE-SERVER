@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
-import org.pingle.pingleserver.exception.BusinessException;
+import org.pingle.pingleserver.exception.CustomException;
 import org.springframework.stereotype.Component;
 
 import java.security.PublicKey;
@@ -26,7 +26,7 @@ public class AppleJwtParser {
             return OBJECT_MAPPER.readValue(decodedHeader, Map.class);
 
         } catch (JsonProcessingException | ArrayIndexOutOfBoundsException e) {
-            throw new BusinessException(ErrorMessage.INVALID_APPLE_IDENTITY_TOKEN);
+            throw new CustomException(ErrorMessage.INVALID_APPLE_IDENTITY_TOKEN);
         }
     }
 
@@ -39,9 +39,9 @@ public class AppleJwtParser {
                     .getBody();
 
         } catch (ExpiredJwtException e) {
-            throw new BusinessException(ErrorMessage.EXPIRED_APPLE_IDENTITY_TOKEN);
+            throw new CustomException(ErrorMessage.EXPIRED_APPLE_IDENTITY_TOKEN);
         } catch (UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
-            throw new BusinessException(ErrorMessage.INVALID_APPLE_IDENTITY_TOKEN);
+            throw new CustomException(ErrorMessage.INVALID_APPLE_IDENTITY_TOKEN);
         }
     }
 }

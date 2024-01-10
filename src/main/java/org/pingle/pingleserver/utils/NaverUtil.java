@@ -1,4 +1,4 @@
-package org.pingle.pingleserver.utils.naversearchutil;
+package org.pingle.pingleserver.utils;
 
 
 import org.pingle.pingleserver.dto.reponse.LocationResponse;

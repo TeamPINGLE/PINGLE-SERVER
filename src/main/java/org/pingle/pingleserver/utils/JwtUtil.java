@@ -9,7 +9,7 @@ import org.pingle.pingleserver.constant.Constants;
 import org.pingle.pingleserver.domain.enums.URole;
 import org.pingle.pingleserver.dto.response.JwtTokenResponse;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
-import org.pingle.pingleserver.exception.BusinessException;
+import org.pingle.pingleserver.exception.CustomException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -50,13 +50,13 @@ public class JwtUtil implements InitializingBean {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (MalformedJwtException ex) {
-            throw new BusinessException(ErrorMessage.INVALID_JWT_TOKEN);
+            throw new CustomException(ErrorMessage.INVALID_JWT_TOKEN);
         } catch (ExpiredJwtException ex) {
-            throw new BusinessException(ErrorMessage.EXPIRED_JWT_TOKEN);
+            throw new CustomException(ErrorMessage.EXPIRED_JWT_TOKEN);
         } catch (UnsupportedJwtException ex) {
-            throw new BusinessException(ErrorMessage.UNSUPPORTED_JWT_TOKEN);
+            throw new CustomException(ErrorMessage.UNSUPPORTED_JWT_TOKEN);
         } catch (IllegalArgumentException ex) {
-            throw new BusinessException(ErrorMessage.JWT_TOKEN_IS_EMPTY);
+            throw new CustomException(ErrorMessage.JWT_TOKEN_IS_EMPTY);
         }
     }
 
