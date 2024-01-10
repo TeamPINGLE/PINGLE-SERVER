@@ -43,14 +43,14 @@ public class TeamService {
 
     public SelectedTeamResponse getTeam(Long teamId) {
         TeamDetailDto team = teamRepository.findTeamDetailsWithCounts(teamId)
-                .orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_RESOURCE));
+                .orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
         return SelectedTeamResponse.of(team.team(), team.meetingCount(), team.participantCount());
     }
 
     @Transactional
     public TeamRegistResponse registTeam(Long userId, Long teamId, TeamRegisterRequest request) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_RESOURCE));
+                .orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
         if (!team.getCode().equals(request.code())) {
             throw new CustomException(ErrorMessage.INVALID_GROUP_CODE);
         }

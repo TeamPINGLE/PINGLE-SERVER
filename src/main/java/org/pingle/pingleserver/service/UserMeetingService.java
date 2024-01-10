@@ -37,13 +37,13 @@ public class UserMeetingService {
     //유저가 그룹에 있는지
     public void verifyUser(Long userId, Long groupId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorMessage.NO_SUCH_USER));
-        Team team = teamRepository.findById(groupId).orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_RESOURCE));
+        Team team = teamRepository.findById(groupId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
         userTeamRepository.findByUserAndTeam(user, team).orElseThrow(() -> new CustomException(ErrorMessage.GROUP_PERMISSION_DENIED));
     }
 
     @Transactional
     public Long participateMeeting(Long userId, Long meetingId) {
-        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_RESOURCE));
+        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
         if(isParticipating(userId, meeting))
             throw new CustomException(ErrorMessage.RESOURCE_CONFLICT);
         if((getCurParticipants(meeting)) >= meeting.getMaxParticipants())
@@ -55,7 +55,7 @@ public class UserMeetingService {
     @Transactional
     public Long cancelMeeting(Long userId, Long meetingId) {
         UserMeeting userMeeting = userMeetingRepository.findByUserIdAndMeetingId(userId, meetingId)
-                .orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_RESOURCE));
+                .orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
         userMeetingRepository.delete(userMeeting);
         return userMeeting.getId();
     }

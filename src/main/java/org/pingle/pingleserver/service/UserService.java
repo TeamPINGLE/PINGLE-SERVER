@@ -18,14 +18,14 @@ public class UserService {
 
     public UserInfoResponse getUserInfo(Long userId) {
         User user = userRepository.findByIdAndIsDeleted(userId, false).orElseThrow(
-                () -> new CustomException(ErrorMessage.USER_NOT_FOUND_ERROR));
+                () -> new CustomException(ErrorMessage.USER_NOT_FOUND));
         return UserInfoResponse.of(user);
     }
 
     @Transactional
     public void leave(Long userId) {
         User user = userRepository.findByIdAndIsDeleted(userId, false).orElseThrow(
-                () -> new CustomException(ErrorMessage.USER_NOT_FOUND_ERROR));
+                () -> new CustomException(ErrorMessage.USER_NOT_FOUND));
         user.softDelete();
     }
 }

@@ -22,9 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     private final JwtUtil jwtUtil;
-    @GetMapping("/token")
-    public JwtTokenResponse testToken() {
-        return jwtUtil.generateTokens(1L, URole.ADMIN);
+    private final UserRepository userRepository;
+
+    @GetMapping("/token/{userId}")
+    public JwtTokenResponse testToken(@PathVariable Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
+        JwtTokenResponse response = jwtUtil.generateTokens(user.getId(), user.getRole());
+        user.updateRefreshToken(response.refreshToken());
+        return response;
     }
 
     @GetMapping("/user-test")
