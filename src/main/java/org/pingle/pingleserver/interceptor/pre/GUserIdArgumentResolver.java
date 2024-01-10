@@ -33,7 +33,7 @@ public class GUserIdArgumentResolver implements HandlerMethodArgumentResolver {
                                   WebDataBinderFactory binderFactory) {
         final Principal principal = webRequest.getUserPrincipal();
         if (principal == null) {
-            throw new CustomException(ErrorMessage.NO_SUCH_USER);
+            throw new CustomException(ErrorMessage.EMPTY_PRINCIPAL);
         }
 
         if (webRequest.getHeader("Group-Id") == null)
