@@ -9,6 +9,7 @@ import org.pingle.pingleserver.domain.enums.Provider;
 import org.pingle.pingleserver.domain.enums.URole;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,6 +41,9 @@ public class User {
     private boolean isDeleted = false;
 
     private LocalDateTime deletedAt;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserTeam> userTeams;
 
     @Builder
     public User(String serialId, String name, String email, Provider provider, URole role, String refreshToken) {
