@@ -43,8 +43,7 @@ public class AuthService {
 
     @Transactional
     public void logout(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
+        User user = userRepository.findByIdOrThrow(userId);
         user.updateRefreshToken(null);
     }
 

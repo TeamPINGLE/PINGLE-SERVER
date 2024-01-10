@@ -49,13 +49,11 @@ public class TeamService {
 
     @Transactional
     public TeamRegistResponse registTeam(Long userId, Long teamId, TeamRegisterRequest request) {
-        Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
+        Team team = teamRepository.findByIdOrThrow(teamId);
         if (!team.getCode().equals(request.code())) {
             throw new CustomException(ErrorMessage.INVALID_GROUP_CODE);
         }
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorMessage.NO_SUCH_USER));
+        User user = userRepository.findByIdOrThrow(userId);
         boolean isRegistered = userTeamRepository.existsByUserAndTeam(user, team);
         if (isRegistered) {
             throw new CustomException(ErrorMessage.ALREADY_REGISTERED_USER);

@@ -38,7 +38,7 @@ public enum ErrorMessage {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     NOT_FOUND_END_POINT(HttpStatus.NOT_FOUND, "존재하지 않는 API입니다."),
     // Method Not Allowed Error 405
-    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP 메소드입니다."),
+    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTPe 메소드입니다."),
     // Conflict Error 409
     RESOURCE_CONFLICT(HttpStatus.CONFLICT, "리소스 충돌이 일어났습니다."),
     // OpenApi Server Error 500

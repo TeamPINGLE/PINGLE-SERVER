@@ -38,7 +38,7 @@ public class PinService {
     private final UserMeetingRepository userMeetingRepository;
 
     public List<PinResponse> getPinListFilterByCategory(Long teamId, MCategory category) {
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
+        Team team = teamRepository.findByIdOrThrow(teamId);
         List<Pin> pinList = pinRepository.findAllByTeam(team);
         if(category == null) return pinList.stream().map(PinResponse::of).toList();
         return pinList.stream().filter(pin -> checkMeetingsCategoryOfPin(pin, category)).map(PinResponse::of).toList();
@@ -71,7 +71,7 @@ public class PinService {
 
     @Transactional
     public Pin verifyAndReturnPin(MeetingRequest request, Long groupId) {
-        Team team = teamRepository.findById(groupId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
+        Team team = teamRepository.findByIdOrThrow(groupId);
         if(!exist(new Point(request.x(), request.y()))) {
              return pinRepository.save(Pin.builder()
                     .address(new Address(request.roadAddress(), request.address()))
@@ -93,7 +93,8 @@ public class PinService {
     }
 
     private String getOwnerName(Meeting meeting) {
-        UserMeeting userMeeting = userMeetingRepository.findByMeetingAndMeetingRole(meeting, MRole.OWNER).orElseThrow(() ->new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
+        UserMeeting userMeeting = userMeetingRepository.findByMeetingAndMeetingRole(meeting, MRole.OWNER)
+                .orElseThrow(() ->new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
         return userMeeting.getUser().getName();
     }
 

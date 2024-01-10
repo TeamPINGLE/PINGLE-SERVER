@@ -25,7 +25,7 @@ public class UserMeetingService {
 
     @Transactional
     public Long addOwnerToMeeting(Long userId, Meeting meeting) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorMessage.NO_SUCH_USER));
+        User user = userRepository.findByIdOrThrow(userId);
         return userMeetingRepository.save(
                 UserMeeting.builder()
                         .user(user)
@@ -36,9 +36,10 @@ public class UserMeetingService {
 
     //유저가 그룹에 있는지
     public void verifyUser(Long userId, Long groupId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorMessage.NO_SUCH_USER));
-        Team team = teamRepository.findById(groupId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
-        userTeamRepository.findByUserAndTeam(user, team).orElseThrow(() -> new CustomException(ErrorMessage.GROUP_PERMISSION_DENIED));
+        User user = userRepository.findByIdOrThrow(userId);
+        Team team = teamRepository.findByIdOrThrow(groupId);
+        userTeamRepository.findByUserAndTeam(user, team)
+                .orElseThrow(() -> new CustomException(ErrorMessage.GROUP_PERMISSION_DENIED));
     }
 
     @Transactional
@@ -48,7 +49,7 @@ public class UserMeetingService {
             throw new CustomException(ErrorMessage.RESOURCE_CONFLICT);
         if((getCurParticipants(meeting)) >= meeting.getMaxParticipants())
             throw new CustomException(ErrorMessage.RESOURCE_CONFLICT);
-        User user = userRepository.findById(userId).orElseThrow(() ->new CustomException(ErrorMessage.NO_SUCH_USER));
+        User user = userRepository.findByIdOrThrow(userId);
         return userMeetingRepository.save(new UserMeeting(user, meeting, MRole.PARTICIPANTS)).getId();
     }
 
