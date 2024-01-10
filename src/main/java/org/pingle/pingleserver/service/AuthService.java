@@ -36,6 +36,7 @@ public class AuthService {
 
     @Transactional
     public JwtTokenResponse reissue(ReissueRequest request) {
+        jwtUtil.getTokenBody(request.refreshToken());
         User user = userRepository.findByRefreshTokenAndIsDeleted(request.refreshToken(), false)
                 .orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
         return generateTokensWithUpdateRefreshToken(user);
