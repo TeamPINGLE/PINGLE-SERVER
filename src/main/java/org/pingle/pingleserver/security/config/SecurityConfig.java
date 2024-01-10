@@ -22,6 +22,7 @@ public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
             "/v1/auth/login",
+            "/v1/auth/reissue",
             "/actuator/health",
             "/test/**",
 
