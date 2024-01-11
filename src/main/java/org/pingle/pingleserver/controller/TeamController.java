@@ -6,7 +6,7 @@ import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.dto.common.ApiResponse;
 import org.pingle.pingleserver.dto.request.TeamRegisterRequest;
 import org.pingle.pingleserver.dto.response.SelectedTeamResponse;
-import org.pingle.pingleserver.dto.response.TeamRegistResponse;
+import org.pingle.pingleserver.dto.response.TeamRegisterResponse;
 import org.pingle.pingleserver.dto.response.TeamSearchResultResponse;
 import org.pingle.pingleserver.dto.type.SuccessMessage;
 import org.pingle.pingleserver.service.TeamService;
@@ -32,10 +32,10 @@ public class TeamController {
     }
 
     @PostMapping("/{teamId}/register")
-    public ApiResponse<TeamRegistResponse> registerTeam(
+    public ApiResponse<TeamRegisterResponse> registerTeam(
             @UserId Long userId,
             @PathVariable Long teamId,
             @Valid @RequestBody TeamRegisterRequest request){
-        return ApiResponse.success(SuccessMessage.OK, teamService.registTeam(userId, teamId, request));
+        return ApiResponse.success(SuccessMessage.OK, teamService.registerTeam(userId, teamId, request));
     }
 }
