@@ -8,7 +8,7 @@ import org.pingle.pingleserver.domain.enums.TRole;
 import org.pingle.pingleserver.dto.request.TeamRegisterRequest;
 import org.pingle.pingleserver.dto.response.SelectedTeamResponse;
 import org.pingle.pingleserver.dto.response.TeamDetailDto;
-import org.pingle.pingleserver.dto.response.TeamRegistResponse;
+import org.pingle.pingleserver.dto.response.TeamRegisterResponse;
 import org.pingle.pingleserver.dto.response.TeamSearchResultResponse;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
 import org.pingle.pingleserver.exception.CustomException;
@@ -48,7 +48,7 @@ public class TeamService {
     }
 
     @Transactional
-    public TeamRegistResponse registTeam(Long userId, Long teamId, TeamRegisterRequest request) {
+    public TeamRegisterResponse registerTeam(Long userId, Long teamId, TeamRegisterRequest request) {
         Team team = teamRepository.findByIdOrThrow(teamId);
         if (!team.getCode().equals(request.code())) {
             throw new CustomException(ErrorMessage.INVALID_GROUP_CODE);
@@ -64,6 +64,6 @@ public class TeamService {
                 .teamRole(TRole.PARTICIPANT)
                 .build();
         userTeamRepository.save(newUserTeam);
-        return TeamRegistResponse.of(team.getId(), team.getName());
+        return TeamRegisterResponse.of(team.getId(), team.getName());
     }
 }
