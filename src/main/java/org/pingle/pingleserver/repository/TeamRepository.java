@@ -17,7 +17,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
     }
     List<Team> findAllByNameIgnoreCaseContainingOrderByName(String name);
 
-    @Query("SELECT new org.pingle.pingleserver.dto.response.TeamDetailDto(t, COUNT(m), COUNT(ut)) " +
+    @Query("SELECT new org.pingle.pingleserver.dto.response.TeamDetailDto(t, COUNT(DISTINCT m.id), COUNT(DISTINCT ut.id)) " +
             "FROM Team t " +
             "LEFT JOIN Pin p ON p.team = t " +
             "LEFT JOIN Meeting m ON m.pin = p " +
