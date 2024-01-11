@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MeetingController {
 
-    private static final String GROUP_ID = "Group-Id";
+    private static final String GROUP_ID = "X-Group-Id";
     private final MeetingService meetingService;
     private final UserMeetingService userMeetingService;
     private final PinService pinService;
