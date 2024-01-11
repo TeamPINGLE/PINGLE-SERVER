@@ -37,14 +37,14 @@ public class PinService {
     private final TeamRepository teamRepository;
     private final UserMeetingRepository userMeetingRepository;
 
-    public List<PinResponse> getPinListFilterByCategory(Long teamId, MCategory category) {
+    public List<PinResponse> getPinsFilterByCategory(Long teamId, MCategory category) {
         Team team = teamRepository.findByIdOrThrow(teamId);
         List<Pin> pinList = pinRepository.findAllByTeam(team);
         if(category == null) return pinList.stream().map(PinResponse::of).toList();
         return pinList.stream().filter(pin -> checkMeetingsCategoryOfPin(pin, category)).map(PinResponse::of).toList();
     }
 
-    public List<MeetingResponse> getMeetingDetailList(Long userId, Long pinId) {
+    public List<MeetingResponse> getMeetingsDetail(Long userId, Long pinId) {
         Pin pin = pinRepository.findById(pinId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
         Comparator<Meeting> comparator = Comparator.comparing(Meeting::getStartAt);
         List<Meeting> meetingList = pin.getMeetingList();
