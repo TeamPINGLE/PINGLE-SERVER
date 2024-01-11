@@ -28,7 +28,7 @@ public class MeetingController {
 
     @PostMapping
     public ApiResponse<?> createMeeting(@Valid @RequestBody MeetingRequest request, @GUserId Long userId,
-                                        @RequestHeader(Constants.GROUP_ID) Long groupId) {
+                                        @RequestHeader(Constants.TEAM_ID) Long groupId) {
         Pin pin = pinService.verifyAndReturnPin(request, groupId);//핀 없으면 핀 생성 후 반환, 있다면 핀 생성
         Meeting meeting = meetingService.createMeeting(request, pin);//번개 생성
         Long userMeetingId = userMeetingService.addOwnerToMeeting(userId, meeting);

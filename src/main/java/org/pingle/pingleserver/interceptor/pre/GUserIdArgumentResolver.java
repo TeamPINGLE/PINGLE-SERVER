@@ -37,9 +37,9 @@ public class GUserIdArgumentResolver implements HandlerMethodArgumentResolver {
             throw new CustomException(ErrorMessage.EMPTY_PRINCIPAL);
         }
 
-        if (webRequest.getHeader(Constants.GROUP_ID) == null)
+        if (webRequest.getHeader(Constants.TEAM_ID) == null)
             throw new CustomException(ErrorMessage.INVALID_HEADER_ERROR);
-        Long groupId = Long.valueOf(webRequest.getHeader(Constants.GROUP_ID));
+        Long groupId = Long.valueOf(webRequest.getHeader(Constants.TEAM_ID));
 
         userMeetingService.verifyUser(getIdFromPrincipal(principal), groupId);
 
