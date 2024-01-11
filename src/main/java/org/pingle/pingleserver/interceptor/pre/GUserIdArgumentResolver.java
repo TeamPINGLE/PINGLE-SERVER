@@ -2,6 +2,7 @@ package org.pingle.pingleserver.interceptor.pre;
 
 import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.annotation.GUserId;
+import org.pingle.pingleserver.constant.Constants;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
 import org.pingle.pingleserver.exception.CustomException;
 import org.pingle.pingleserver.service.UserMeetingService;
@@ -36,9 +37,9 @@ public class GUserIdArgumentResolver implements HandlerMethodArgumentResolver {
             throw new CustomException(ErrorMessage.EMPTY_PRINCIPAL);
         }
 
-        if (webRequest.getHeader("Group-Id") == null)
+        if (webRequest.getHeader(Constants.GROUP_ID) == null)
             throw new CustomException(ErrorMessage.INVALID_HEADER_ERROR);
-        Long groupId = Long.valueOf(webRequest.getHeader("Group-Id"));
+        Long groupId = Long.valueOf(webRequest.getHeader(Constants.GROUP_ID));
 
         userMeetingService.verifyUser(getIdFromPrincipal(principal), groupId);
 
