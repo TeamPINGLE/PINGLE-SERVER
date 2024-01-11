@@ -9,6 +9,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pingle.pingleserver.constant.Constants;
+import org.pingle.pingleserver.dto.type.ErrorMessage;
+import org.pingle.pingleserver.exception.CustomException;
 import org.pingle.pingleserver.security.info.UserAuthentication;
 import org.pingle.pingleserver.utils.JwtUtil;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +35,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(token)) {
             Claims claims = jwtUtil.getTokenBody(token);
-            Long userId = claims.get("uid", Long.class);
+            Long userId = claims.get(Constants.USER_ID_CLAIM_NAME, Long.class);
+            if (claims.get(Constants.USER_ROLE_CLAIM_NAME, String.class) == null) {
+                if (!request.getRequestURI().equals("/v1/auth/reissue"))
+                    throw new CustomException(ErrorMessage.INVALID_TOKEN_TYPE);
+            }
             UserAuthentication authentication = new UserAuthentication(userId, null, null);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);

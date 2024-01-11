@@ -13,10 +13,11 @@ public enum ErrorMessage {
     EXPIRED_APPLE_IDENTITY_TOKEN(HttpStatus.BAD_REQUEST, "만료된 Apple Identity Token입니다."),
     CREATE_PUBLIC_KEY_EXCEPTION(HttpStatus.BAD_REQUEST, "Apple Public verify에 실패했습니다."),
     // JWT Error
-    INVALID_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 JWT 토큰입니다."),
-    EXPIRED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 JWT 토큰입니다."),
-    UNSUPPORTED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "지원하지 않는 JWT 토큰입니다."),
-    JWT_TOKEN_IS_EMPTY(HttpStatus.UNAUTHORIZED, "JWT 토큰이 비어있습니다."),
+    INVALID_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
+    EXPIRED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
+    UNSUPPORTED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "지원하지 않는 토큰입니다."),
+    JWT_TOKEN_IS_EMPTY(HttpStatus.UNAUTHORIZED, "토큰이 비어있습니다."),
+    INVALID_TOKEN_TYPE(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰 타입입니다."),
     // Invalid Argument Error 400
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     ALREADY_REGISTERED_USER(HttpStatus.BAD_REQUEST, "이미 가입된 사용자입니다."),

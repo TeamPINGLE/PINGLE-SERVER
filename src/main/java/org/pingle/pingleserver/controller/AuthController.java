@@ -7,7 +7,6 @@ import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.constant.Constants;
 import org.pingle.pingleserver.dto.common.ApiResponse;
 import org.pingle.pingleserver.dto.request.LoginRequest;
-import org.pingle.pingleserver.dto.request.ReissueRequest;
 import org.pingle.pingleserver.dto.response.JwtTokenResponse;
 import org.pingle.pingleserver.dto.type.SuccessMessage;
 import org.pingle.pingleserver.service.AuthService;
@@ -29,8 +28,8 @@ public class AuthController {
 
     @PostMapping("/reissue")
     public ApiResponse<JwtTokenResponse> reissue(
-            @Valid @RequestBody ReissueRequest request){
-        return ApiResponse.success(SuccessMessage.OK, authService.reissue(request));
+            @NotNull @RequestHeader(Constants.AUTHORIZATION_HEADER) String refreshToken){
+        return ApiResponse.success(SuccessMessage.OK, authService.reissue(refreshToken));
     }
 
     @PostMapping("/logout")

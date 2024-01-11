@@ -1,10 +1,11 @@
 package org.pingle.pingleserver.service;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.pingle.pingleserver.constant.Constants;
 import org.pingle.pingleserver.domain.User;
 import org.pingle.pingleserver.domain.enums.Provider;
 import org.pingle.pingleserver.domain.enums.URole;
-import org.pingle.pingleserver.dto.request.ReissueRequest;
 import org.pingle.pingleserver.exception.CustomException;
 import org.pingle.pingleserver.oauth.dto.SocialInfoDto;
 import org.pingle.pingleserver.dto.request.LoginRequest;
@@ -35,9 +36,13 @@ public class AuthService {
     }
 
     @Transactional
-    public JwtTokenResponse reissue(ReissueRequest request) {
-        jwtUtil.getTokenBody(request.refreshToken());
-        User user = userRepository.findByRefreshTokenAndIsDeleted(request.refreshToken(), false)
+    public JwtTokenResponse reissue(String token) {
+        String refreshToken = getToken(token);
+        Claims claims = jwtUtil.getTokenBody(refreshToken);
+        if (claims.get(Constants.USER_ROLE_CLAIM_NAME, String.class) != null) {
+            throw new CustomException(ErrorMessage.INVALID_TOKEN_TYPE);
+        }
+        User user = userRepository.findByRefreshTokenAndIsDeleted(refreshToken, false)
                 .orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
         return generateTokensWithUpdateRefreshToken(user);
     }
@@ -80,6 +85,14 @@ public class AuthService {
         JwtTokenResponse jwtTokenResponse = jwtUtil.generateTokens(user.getId(), user.getRole());
         user.updateRefreshToken(jwtTokenResponse.refreshToken());
         return jwtTokenResponse;
+    }
+
+    private String getToken(String token){
+        if (token.startsWith(Constants.BEARER_PREFIX)){
+            return token.substring(Constants.BEARER_PREFIX.length());
+        } else {
+            return token;
+        }
     }
 
 }
