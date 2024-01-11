@@ -6,11 +6,11 @@ import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.domain.User;
 import org.pingle.pingleserver.dto.response.JwtTokenResponse;
 import org.pingle.pingleserver.exception.CustomException;
-import org.pingle.pingleserver.dto.response.JwtTokenResponse;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
 import org.pingle.pingleserver.repository.UserRepository;
 import org.pingle.pingleserver.utils.JwtUtil;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +25,7 @@ public class TestController {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
+    @Transactional
     @GetMapping("/token/{userId}")
     public JwtTokenResponse testToken(@PathVariable Long userId) {
         User user = userRepository.findById(userId)
