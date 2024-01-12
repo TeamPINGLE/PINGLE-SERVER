@@ -30,10 +30,10 @@ public record MeetingRequest(@NotNull MCategory category,
                              Integer maxParticipants,
                              String chatLink) {
 
-    @AssertTrue(message = "번개 시작 시간은 지금 시각 보다 전일 수 없습니다")
-    public boolean isValidStartTime() {
+    @AssertTrue(message = "번개 종료 시각은 번개 생성보다 빠를 수 없습니다.")
+    public boolean isValidEndTime() {
         try {
-            if(compareLocalDateTime(this.startAt() ,LocalDateTime.now()) < 0 )//startat 이전 false
+            if(compareLocalDateTime(this.endAt() ,this.startAt()) < 0 )//startat 이전 false
                 return false;
             return true;
         } catch (RuntimeException e) {
