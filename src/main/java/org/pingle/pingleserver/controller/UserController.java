@@ -1,15 +1,13 @@
 package org.pingle.pingleserver.controller;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.dto.common.ApiResponse;
 import org.pingle.pingleserver.dto.response.UserInfoResponse;
 import org.pingle.pingleserver.dto.type.SuccessMessage;
 import org.pingle.pingleserver.service.UserService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -24,8 +22,8 @@ public class UserController {
     }
 
     @DeleteMapping("/leave")
-    public ApiResponse<Void> leave(@UserId Long userId){
-        userService.leave(userId);
+    public ApiResponse<Void> leave(@UserId Long userId, @Nullable @RequestHeader("X-Apple-Code") String code){
+        userService.leave(userId, code);
         return ApiResponse.success(SuccessMessage.OK);
     }
 }
