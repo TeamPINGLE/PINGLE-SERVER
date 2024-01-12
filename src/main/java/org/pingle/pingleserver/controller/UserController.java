@@ -4,7 +4,6 @@ import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.dto.common.ApiResponse;
-import org.pingle.pingleserver.dto.request.LeaveRequest;
 import org.pingle.pingleserver.dto.response.UserInfoResponse;
 import org.pingle.pingleserver.dto.type.SuccessMessage;
 import org.pingle.pingleserver.service.UserService;
@@ -23,8 +22,8 @@ public class UserController {
     }
 
     @DeleteMapping("/leave")
-    public ApiResponse<Void> leave(@UserId Long userId, @Nullable @RequestBody LeaveRequest request){
-        userService.leave(userId, request);
+    public ApiResponse<Void> leave(@UserId Long userId, @Nullable @RequestHeader("X-Apple-Code") String code){
+        userService.leave(userId, code);
         return ApiResponse.success(SuccessMessage.OK);
     }
 }
