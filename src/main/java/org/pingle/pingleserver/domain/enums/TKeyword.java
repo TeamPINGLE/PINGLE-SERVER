@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public enum TKeyword {
     CIRCLE("연합 동아리"),
-    COLLEGE("대학교"),
+    UNIVERSITY("대학교"),
     SCHOOL_CLUB("교내 동아리");
 
     private final String value;
