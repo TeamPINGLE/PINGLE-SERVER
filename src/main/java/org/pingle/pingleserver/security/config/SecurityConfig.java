@@ -25,6 +25,7 @@ public class SecurityConfig {
             "/v1/auth/reissue",
             "/actuator/health",
             "/test/**",
+            "/qr/**",
 
             "/api-docs.html",
             "/api-docs/**",
