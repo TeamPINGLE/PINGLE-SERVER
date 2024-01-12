@@ -40,8 +40,9 @@ public class PinService {
     public List<PinResponse> getPinsFilterByCategory(Long teamId, MCategory category) {
         Team team = teamRepository.findByIdOrThrow(teamId);
         List<Pin> pinList = pinRepository.findAllByTeam(team);
-        if(category == null) return pinList.stream().map(PinResponse::of).toList();
-        return pinList.stream().filter(pin -> checkMeetingsCategoryOfPin(pin, category)).map(PinResponse::of).toList();
+        if(category == null) return pinList.stream().map(PinResponse::ofWithNoFilter).toList();
+        return pinList.stream().filter(pin -> checkMeetingsCategoryOfPin(pin, category))
+                .map(pin -> PinResponse.ofWithFilter(pin, category)).toList();
     }
 
     public List<MeetingResponse> getMeetingsDetail(Long userId, Long pinId) {
