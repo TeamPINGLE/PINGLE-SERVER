@@ -21,7 +21,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ApiResponse<JwtTokenResponse> login(
-            @NotNull @RequestHeader(Constants.PROVIDER_TOKEN) String providerToken,
+            @NotNull @RequestHeader(Constants.PROVIDER_TOKEN_HEADER) String providerToken,
             @Valid @RequestBody LoginRequest request){
         return ApiResponse.success(SuccessMessage.OK, authService.login(providerToken, request));
     }
