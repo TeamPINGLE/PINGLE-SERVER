@@ -7,6 +7,11 @@ public class Constants {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String TEAM_ID = "X-Team-Id";
     public static final String PROVIDER_TOKEN = "X-Provider-Token";
+    public static final String APPLE_KEY_ID_NAME = "kid";
+    public static final String APPLE_ISSUER_NAME = "iss";
+    public static final String APPLE_AUDIENCE_NAME = "aud";
+    public static final String APPLE_SUBJECT_NAME = "sub";
+
 
 
 }
