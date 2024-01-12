@@ -40,33 +40,57 @@ public class PinService {
     public List<PinResponse> getPinsFilterByCategory(Long teamId, MCategory category) {
         Team team = teamRepository.findByIdOrThrow(teamId);
         List<Pin> pinList = pinRepository.findAllByTeam(team);
-        if(category == null) return pinList.stream().map(PinResponse::of).toList();
-        return pinList.stream().filter(pin -> checkMeetingsCategoryOfPin(pin, category)).map(PinResponse::of).toList();
+        if(category == null) return pinList.stream().map(PinResponse::ofWithNoFilter).toList();
+        return pinList.stream().filter(pin -> checkMeetingsCategoryOfPin(pin, category))
+                .map(pin -> PinResponse.ofWithFilter(pin, category)).toList();
     }
 
-    public List<MeetingResponse> getMeetingsDetail(Long userId, Long pinId) {
+    public List<MeetingResponse> getMeetingsDetail(Long userId, Long pinId, MCategory category) {
         Pin pin = pinRepository.findById(pinId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
         Comparator<Meeting> comparator = Comparator.comparing(Meeting::getStartAt);
         List<Meeting> meetingList = pin.getMeetingList();
-        meetingList.sort(comparator);
+        meetingList.sort(comparator);//핀의 모든 미팅을 시간순으로 정렬
         List<MeetingResponse> responseList = new ArrayList<>();
-        for(Meeting meeting : meetingList) {
-            responseList.add(MeetingResponse.builder()
-                    .id(meeting.getId())
-                            .category(meeting.getCategory())
-                            .name(meeting.getName())
-                            .ownerName(getOwnerName(meeting))//만든사람
-                            .location(pin.getName())
-                            .date(getDateFromDateTime(meeting.getStartAt()))//meeting start 날짜 parsing
-                            .startAt(getTimeFromDateTime(meeting.getStartAt()))//start 시간 parsing
-                            .endAt(getTimeFromDateTime(meeting.getEndAt()))//end 시간 parsing
-                            .maxParticipants(meeting.getMaxParticipants())
-                            .curParticipants(getCurParticipants(meeting))
-                            .isParticipating(isParticipating(userId, meeting))
-                            .chatLink(meeting.getChatLink())
-                                            .build());
+        if(category == null) {
+            for (Meeting meeting : meetingList) {
+                responseList.add(MeetingResponse.builder()
+                        .id(meeting.getId())
+                        .category(meeting.getCategory())
+                        .name(meeting.getName())
+                        .ownerName(getOwnerName(meeting))//만든사람
+                        .location(pin.getName())
+                        .date(getDateFromDateTime(meeting.getStartAt()))//meeting start 날짜 parsing
+                        .startAt(getTimeFromDateTime(meeting.getStartAt()))//start 시간 parsing
+                        .endAt(getTimeFromDateTime(meeting.getEndAt()))//end 시간 parsing
+                        .maxParticipants(meeting.getMaxParticipants())
+                        .curParticipants(getCurParticipants(meeting))
+                        .isParticipating(isParticipating(userId, meeting))
+                        .chatLink(meeting.getChatLink())
+                        .build());
+            }
+            return responseList;
+        }
+        // 및 카테고리에 포함한 것만
+        for (Meeting meeting : meetingList) {
+            if(meeting.getCategory().getValue().equals(category.getValue())) {
+                responseList.add(MeetingResponse.builder()
+                        .id(meeting.getId())
+                        .category(meeting.getCategory())
+                        .name(meeting.getName())
+                        .ownerName(getOwnerName(meeting))//만든사람
+                        .location(pin.getName())
+                        .date(getDateFromDateTime(meeting.getStartAt()))//meeting start 날짜 parsing
+                        .startAt(getTimeFromDateTime(meeting.getStartAt()))//start 시간 parsing
+                        .endAt(getTimeFromDateTime(meeting.getEndAt()))//end 시간 parsing
+                        .maxParticipants(meeting.getMaxParticipants())
+                        .curParticipants(getCurParticipants(meeting))
+                        .isParticipating(isParticipating(userId, meeting))
+                        .chatLink(meeting.getChatLink())
+                        .build());
+            }
         }
         return responseList;
+
     }
 
     @Transactional

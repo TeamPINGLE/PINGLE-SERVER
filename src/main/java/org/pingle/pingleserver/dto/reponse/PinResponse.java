@@ -8,9 +8,14 @@ import java.util.Comparator;
 import java.util.List;
 
 public record PinResponse(Long id, Double x, Double y, MCategory category, int meetingCount) {
-    public static PinResponse of(Pin pin) {
+    public static PinResponse ofWithNoFilter(Pin pin) {
         return new PinResponse(pin.getId(),pin.getPoint().getX(), pin.getPoint().getY(),
                 getMostRecentMeetingCategoryOfPin(pin), getMeetingCount(pin));
+
+    }
+    public static PinResponse ofWithFilter(Pin pin, MCategory mCategory) {
+        return new PinResponse(pin.getId(),pin.getPoint().getX(), pin.getPoint().getY(),
+                mCategory, getMeetingCountWithFilter(pin, mCategory));
 
     }
     private static MCategory getMostRecentMeetingCategoryOfPin (Pin pin) {
@@ -22,6 +27,16 @@ public record PinResponse(Long id, Double x, Double y, MCategory category, int m
 
     private static int getMeetingCount(Pin pin) {
         return pin.getMeetingList().size();
+    }
+    private static int getMeetingCountWithFilter(Pin pin, MCategory category) {
+        int count = 0;
+        List<Meeting> meetings = pin.getMeetingList();
+        for(Meeting meeting : meetings) {
+            if(meeting.getCategory().getValue().equals(category.getValue()))
+                count++;
+        }
+
+        return count;
     }
 
 }
