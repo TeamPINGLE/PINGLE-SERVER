@@ -27,7 +27,8 @@ public class PinController {
     }
 
     @GetMapping("/{pinId}/meetings")
-    public ApiResponse<List<MeetingResponse>> getMeetings(@UserId Long userId, @PathVariable("pinId") Long pinId) {
-        return ApiResponse.success(SuccessMessage.OK, pinService.getMeetingsDetail(userId, pinId));
+    public ApiResponse<List<MeetingResponse>> getMeetings(@UserId Long userId, @PathVariable("pinId") Long pinId,
+                                                          @Nullable @RequestParam("category")MCategory category) {
+        return ApiResponse.success(SuccessMessage.OK, pinService.getMeetingsDetail(userId, pinId, category));
     }
 }
