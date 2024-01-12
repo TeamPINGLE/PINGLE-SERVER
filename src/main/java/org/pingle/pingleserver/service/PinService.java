@@ -87,6 +87,7 @@ public class PinService {
                         .curParticipants(getCurParticipants(meeting))
                         .isParticipating(isParticipating(userId, meeting))
                         .chatLink(meeting.getChatLink())
+                        .isOwner(isOwner(userId, meeting.getId()))
                         .build());
             }
         }
