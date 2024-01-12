@@ -66,6 +66,7 @@ public class PinService {
                         .curParticipants(getCurParticipants(meeting))
                         .isParticipating(isParticipating(userId, meeting))
                         .chatLink(meeting.getChatLink())
+                        .isOwner(isOwner(userId, meeting.getId()))
                         .build());
             }
             return responseList;
@@ -137,6 +138,12 @@ public class PinService {
     private String getTimeFromDateTime(LocalDateTime localDateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         return localDateTime.format(formatter);
+    }
+
+    private boolean isOwner(Long userId, Long meetingId) {
+        if(userMeetingRepository.existsByUserIdAndMeetingIdAndMeetingRole(userId, meetingId, MRole.OWNER))
+            return true;
+        return false;
     }
 
     private boolean exist(Point point) {
