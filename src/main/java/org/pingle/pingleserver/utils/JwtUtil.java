@@ -50,13 +50,13 @@ public class JwtUtil implements InitializingBean {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (MalformedJwtException ex) {
-            throw new CustomException(ErrorMessage.INVALID_JWT_TOKEN);
+            throw new CustomException(ErrorMessage.INVALID_JWT);
         } catch (ExpiredJwtException ex) {
-            throw new CustomException(ErrorMessage.EXPIRED_JWT_TOKEN);
+            throw new CustomException(ErrorMessage.EXPIRED_JWT);
         } catch (UnsupportedJwtException ex) {
-            throw new CustomException(ErrorMessage.UNSUPPORTED_JWT_TOKEN);
+            throw new CustomException(ErrorMessage.UNSUPPORTED_JWT);
         } catch (IllegalArgumentException ex) {
-            throw new CustomException(ErrorMessage.JWT_TOKEN_IS_EMPTY);
+            throw new CustomException(ErrorMessage.JWT_IS_EMPTY);
         }
     }
 
