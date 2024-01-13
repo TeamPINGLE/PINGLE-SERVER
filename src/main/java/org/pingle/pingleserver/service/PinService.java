@@ -97,7 +97,7 @@ public class PinService {
     @Transactional
     public Pin verifyAndReturnPin(MeetingRequest request, Long groupId) {
         Team team = teamRepository.findByIdOrThrow(groupId);
-        if(!exist(new Point(request.x(), request.y()))) {
+        if(!pinRepository.existsByPointAndTeam(new Point(request.x(), request.y()), team)) {
              return pinRepository.save(Pin.builder()
                     .address(new Address(request.roadAddress(), request.address()))
                     .name(request.location())
@@ -105,7 +105,7 @@ public class PinService {
                     .team(team)
                     .build());
         }
-        return pinRepository.findByPoint(new Point(request.x(), request.y()));
+        return pinRepository.findByPointAndTeam(new Point(request.x(), request.y()), team);
     }
   
     private boolean checkMeetingsCategoryOfPin(Pin pin, MCategory category) {
