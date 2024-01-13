@@ -14,10 +14,10 @@ public enum ErrorMessage {
     CREATE_PUBLIC_KEY_EXCEPTION(HttpStatus.BAD_REQUEST, "Apple Public verify에 실패했습니다."),
     APPLE_REVOKE_FAILED(HttpStatus.BAD_REQUEST, "Apple 탈퇴에 실패했습니다."),
     // JWT Error
-    INVALID_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
-    EXPIRED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
-    UNSUPPORTED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "지원하지 않는 토큰입니다."),
-    JWT_TOKEN_IS_EMPTY(HttpStatus.UNAUTHORIZED, "토큰이 비어있습니다."),
+    INVALID_JWT(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
+    EXPIRED_JWT(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
+    UNSUPPORTED_JWT(HttpStatus.UNAUTHORIZED, "지원하지 않는 토큰입니다."),
+    JWT_IS_EMPTY(HttpStatus.UNAUTHORIZED, "토큰이 비어있습니다."),
     INVALID_TOKEN_TYPE(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰 타입입니다."),
     // Invalid Argument Error 400
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
