@@ -42,8 +42,11 @@ public class AuthService {
         if (claims.get(Constants.USER_ROLE_CLAIM_NAME, String.class) != null) {
             throw new CustomException(ErrorMessage.INVALID_TOKEN_TYPE);
         }
-        User user = userRepository.findByRefreshTokenAndIsDeleted(refreshToken, false)
-                .orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
+        Long userId = claims.get(Constants.USER_ID_CLAIM_NAME, Long.class);
+        User user = userRepository.findByIdAndIsDeletedOrThrow(userId, false);
+        if (!user.getRefreshToken().equals(refreshToken)){
+            throw new CustomException(ErrorMessage.INVALID_JWT);
+        }
         return generateTokensWithUpdateRefreshToken(user);
     }
 
