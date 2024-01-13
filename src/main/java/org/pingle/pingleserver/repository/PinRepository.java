@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface PinRepository extends JpaRepository<Pin, Long> {
     List<Pin> findAllByTeam(Team team);
-    boolean existsByPoint(Point point);
-    Pin findByPoint(Point point);
+    boolean existsByPointAndTeam(Point point, Team team);
+    Pin findByPointAndTeam(Point point, Team team);
 }
