@@ -141,12 +141,6 @@ public class PinService {
     }
 
     private boolean isOwner(Long userId, Long meetingId) {
-        if(userMeetingRepository.existsByUserIdAndMeetingIdAndMeetingRole(userId, meetingId, MRole.OWNER))
-            return true;
-        return false;
-    }
-
-    private boolean exist(Point point) {
-        return pinRepository.existsByPoint(point);
+        return userMeetingRepository.existsByUserIdAndMeetingIdAndMeetingRole(userId, meetingId, MRole.OWNER);
     }
 }
