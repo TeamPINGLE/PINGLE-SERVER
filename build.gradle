@@ -55,6 +55,10 @@ dependencies {
 
 	// Social Login
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.0'
+
+	// Sentry
+	implementation 'io.sentry:sentry-spring-boot-starter-jakarta:7.1.0'
+	implementation 'io.sentry:sentry-logback:7.1.0'
 }
 
 tasks.named('bootBuildImage') {
