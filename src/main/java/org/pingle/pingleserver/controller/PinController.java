@@ -22,8 +22,7 @@ public class PinController {
 
     @GetMapping
     public ApiResponse<List<PinResponse>> getPins (@PathVariable("teamId") Long teamId, @Nullable @RequestParam("category")MCategory category) {
-        return ApiResponse.success(SuccessMessage.OK, pinService.getPinsFilterByCategory(teamId, category));
-
+        return ApiResponse.success(SuccessMessage.OK, pinService.getPins(teamId, category));
     }
 
     @GetMapping("/{pinId}/meetings")

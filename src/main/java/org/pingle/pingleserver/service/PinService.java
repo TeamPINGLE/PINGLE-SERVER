@@ -15,6 +15,7 @@ import org.pingle.pingleserver.domain.Point;
 import org.pingle.pingleserver.dto.request.MeetingRequest;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
 import org.pingle.pingleserver.exception.CustomException;
+import org.pingle.pingleserver.repository.MeetingRepository;
 import org.pingle.pingleserver.repository.PinRepository;
 import org.pingle.pingleserver.repository.TeamRepository;
 import org.pingle.pingleserver.repository.UserMeetingRepository;
@@ -35,6 +36,7 @@ public class PinService {
 
     private final PinRepository pinRepository;
     private final TeamRepository teamRepository;
+    private final MeetingRepository meetingRepository;
     private final UserMeetingRepository userMeetingRepository;
 
     public List<PinResponse> getPinsFilterByCategory(Long teamId, MCategory category) {
@@ -48,7 +50,7 @@ public class PinService {
     public List<MeetingResponse> getMeetingsDetail(Long userId, Long pinId, MCategory category) {
         Pin pin = pinRepository.findById(pinId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
         Comparator<Meeting> comparator = Comparator.comparing(Meeting::getStartAt);
-        List<Meeting> meetingList = pin.getMeetingList();
+        List<Meeting> meetingList = pin.getMeetings();
         meetingList.sort(comparator);//핀의 모든 미팅을 시간순으로 정렬
         List<MeetingResponse> responseList = new ArrayList<>();
         if(category == null) {
@@ -108,9 +110,22 @@ public class PinService {
         }
         return pinRepository.findByPointAndTeam(new Point(request.x(), request.y()), team);
     }
+
+    public List<PinResponse> getPins(Long teamId, MCategory category) {
+        List<Pin> pins;
+
+        if (category == null) {
+            pins = pinRepository.findPinsAndTimeBefore(teamId);
+            return pins.stream().map(PinResponse::ofWithoutCategory).toList();
+        }
+
+        pins = pinRepository.findPinsWithCategoryAndTimeBefore(teamId, category);
+        return pins.stream()
+                .map(pin -> PinResponse.ofWithCategory(pin, category, meetingRepository.countMeetingsForPin(pin.getId(), category))).toList();
+    }
   
     private boolean checkMeetingsCategoryOfPin(Pin pin, MCategory category) {
-        List<Meeting> meetingList = pin.getMeetingList();
+        List<Meeting> meetingList = pin.getMeetings();
         for(Meeting meeting : meetingList) {
             if(meeting.getCategory().getValue().equals(category.getValue()))
                 return true;
