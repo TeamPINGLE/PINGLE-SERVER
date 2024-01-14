@@ -123,6 +123,21 @@ public class PinService {
         return pins.stream()
                 .map(pin -> PinResponse.ofWithCategory(pin, category, meetingRepository.countMeetingsForPin(pin.getId(), category))).toList();
     }
+
+    public List<MeetingResponse> getMeetings(Long pinId, Long userId, MCategory category){
+        List<Meeting> meetings;
+
+        if (category == null){
+            meetings = meetingRepository.findByPinIdAndStartAtAfter(pinId, LocalDateTime.now());
+        } else {
+            meetings = meetingRepository.findByPinIdAndCategoryAndStartAtAfter(pinId, category, LocalDateTime.now());
+        }
+        return meetings.stream()
+                .map(meeting -> MeetingResponse.of(meeting, getOwnerName(meeting), getCurParticipants(meeting),
+                        isParticipating(userId, meeting), isOwner(userId, meeting.getId()))).toList();
+
+
+    }
   
     private boolean checkMeetingsCategoryOfPin(Pin pin, MCategory category) {
         List<Meeting> meetingList = pin.getMeetings();
