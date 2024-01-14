@@ -12,7 +12,7 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
     @Query("SELECT COUNT(m) FROM Meeting m WHERE m.pin.id = :pinId AND m.startAt > CURRENT_TIMESTAMP AND m.category = :category")
     int countMeetingsForPin(Long pinId, MCategory category);
 
-    List<Meeting> findByPinIdAndCategoryAndStartAtAfter(Long pinId, MCategory category, LocalDateTime currentTime);
+    List<Meeting> findByPinIdAndCategoryAndStartAtAfterOrderByStartAt(Long pinId, MCategory category, LocalDateTime currentTime);
 
-    List<Meeting> findByPinIdAndStartAtAfter(Long pinId, LocalDateTime currentTime);
+    List<Meeting> findByPinIdAndStartAtAfterOrderByStartAt(Long pinId, LocalDateTime currentTime);
 }
