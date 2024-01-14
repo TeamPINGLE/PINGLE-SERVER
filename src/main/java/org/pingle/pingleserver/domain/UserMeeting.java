@@ -10,7 +10,7 @@ import org.pingle.pingleserver.domain.enums.MRole;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserMeeting extends BaseTimeEntity {
+public class UserMeeting extends BaseTimeEntity implements Comparable<UserMeeting> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,5 +32,10 @@ public class UserMeeting extends BaseTimeEntity {
         this.user = user;
         this.meeting = meeting;
         this.meetingRole = meetingRole;
+    }
+
+    @Override
+    public int compareTo(UserMeeting o) {
+        return this.meetingRole.compareTo(o.meetingRole);
     }
 }

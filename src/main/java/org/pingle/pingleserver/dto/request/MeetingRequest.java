@@ -29,18 +29,4 @@ public record MeetingRequest(@NotNull MCategory category,
                              @Min(2)@Max(99)
                              Integer maxParticipants,
                              String chatLink) {
-
-    @AssertTrue(message = "번개 시작 시간은 지금 시각 보다 전일 수 없습니다")
-    public boolean isValidStartTime() {
-        try {
-            if(compareLocalDateTime(this.startAt() ,LocalDateTime.now()) < 0 )//startat 이전 false
-                return false;
-            return true;
-        } catch (RuntimeException e) {
-            throw new CustomException(ErrorMessage.BAD_REQUEST);
-        }
-    }
-    private static int compareLocalDateTime(LocalDateTime dateTime1, LocalDateTime dateTime2) {
-        return dateTime1.compareTo(dateTime2);
-    }
 }

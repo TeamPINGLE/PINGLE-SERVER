@@ -10,6 +10,7 @@ import org.pingle.pingleserver.domain.Meeting;
 import org.pingle.pingleserver.domain.Pin;
 import org.pingle.pingleserver.dto.common.ApiResponse;
 import org.pingle.pingleserver.dto.request.MeetingRequest;
+import org.pingle.pingleserver.dto.response.ParticipantsResponse;
 import org.pingle.pingleserver.dto.type.SuccessMessage;
 import org.pingle.pingleserver.service.MeetingService;
 import org.pingle.pingleserver.service.PinService;
@@ -46,5 +47,11 @@ public class MeetingController {
     public ApiResponse<?> cancelMeeting (@UserId Long userId, @PathVariable("meetingId") Long meetingId) {
         Long cancelledId = userMeetingService.cancelMeeting(userId, meetingId);
         return ApiResponse.success(SuccessMessage.OK);
+    }
+
+    @GetMapping("/{meetingId}/participants")
+    public ApiResponse<ParticipantsResponse> getMeetingParticipants (@PathVariable("meetingId") Long meetingId) {
+        return ApiResponse.success(SuccessMessage.OK, meetingService.getParticipants(meetingId));
+
     }
 }
