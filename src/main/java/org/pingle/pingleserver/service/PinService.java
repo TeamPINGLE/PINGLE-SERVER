@@ -128,9 +128,9 @@ public class PinService {
         List<Meeting> meetings;
 
         if (category == null){
-            meetings = meetingRepository.findByPinIdAndStartAtAfter(pinId, LocalDateTime.now());
+            meetings = meetingRepository.findByPinIdAndStartAtAfterOrderByStartAt(pinId, LocalDateTime.now());
         } else {
-            meetings = meetingRepository.findByPinIdAndCategoryAndStartAtAfter(pinId, category, LocalDateTime.now());
+            meetings = meetingRepository.findByPinIdAndCategoryAndStartAtAfterOrderByStartAt(pinId, category, LocalDateTime.now());
         }
         return meetings.stream()
                 .map(meeting -> MeetingResponse.of(meeting, getOwnerName(meeting), getCurParticipants(meeting),
