@@ -21,7 +21,6 @@ public enum ErrorMessage {
     INVALID_TOKEN_TYPE(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰 타입입니다."),
     // Invalid Argument Error 400
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
-    ALREADY_REGISTERED_USER(HttpStatus.BAD_REQUEST, "이미 가입된 사용자입니다."),
     INVALID_GROUP_CODE(HttpStatus.BAD_REQUEST, "유효하지 않은 그룹 코드입니다."),
     INVALID_HEADER_ERROR(HttpStatus.BAD_REQUEST, "유효하지 않은 헤더입니다."),
     INVALID_PROVIDER_ERROR(HttpStatus.BAD_REQUEST, "유효하지 않은 소셜 플랫폼입니다."),
@@ -40,6 +39,7 @@ public enum ErrorMessage {
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 메소드입니다."),
     // Conflict Error 409
     RESOURCE_CONFLICT(HttpStatus.CONFLICT, "리소스 충돌이 일어났습니다."),
+    ALREADY_REGISTERED_USER(HttpStatus.CONFLICT, "이미 가입된 사용자입니다."),
     // Internal Server Error 500
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다.");
 
