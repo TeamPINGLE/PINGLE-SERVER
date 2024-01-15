@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends BaseTimeEntity  {
     private static final Long MEMBER_INFO_RETENTION_PERIOD = 180L;
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

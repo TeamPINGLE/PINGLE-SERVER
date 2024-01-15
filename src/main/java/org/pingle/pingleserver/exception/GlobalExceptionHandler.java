@@ -9,8 +9,10 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -32,11 +34,25 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.fail(ErrorMessage.BAD_REQUEST));
     }
 
+    @ExceptionHandler(value = {HandlerMethodValidationException.class})
+    public ResponseEntity<ApiResponse<?>> handlerHandlerMethodValidationException(Exception e) {
+        log.error("handlerHandlerMethodValidationException() in GlobalExceptionHandler throw HandlerMethodValidationException : {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.fail(ErrorMessage.BAD_REQUEST));
+    }
+
     @ExceptionHandler(value = {MissingRequestHeaderException.class})
     public ResponseEntity<ApiResponse<?>> handlerMissingRequestHeaderException(Exception e) {
         log.error("handlerMissingRequestHeaderException() in GlobalExceptionHandler throw MissingRequestHeaderException : {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.fail(ErrorMessage.MISSING_REQUIRED_HEADER));
+    }
+
+    @ExceptionHandler(value = {MissingServletRequestParameterException.class})
+    public ResponseEntity<ApiResponse<?>> handlerMissingServletRequestParameterException(Exception e) {
+        log.error("handlerMissingServletRequestParameterException() in GlobalExceptionHandler throw MissingServletRequestParameterException : {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.fail(ErrorMessage.MISSING_REQUIRED_PARAMETER));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -69,7 +85,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<?>> handlerException(Exception e) {
-        log.error("handlerException() in GlobalExceptionHandler throw Exception : {}", e.getMessage());
+        log.error("handlerException() in GlobalExceptionHandler throw Exception : {} {}", e.getClass(), e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.fail(ErrorMessage.INTERNAL_SERVER_ERROR));
     }
