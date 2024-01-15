@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.pingle.pingleserver.domain.enums.MCategory;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,6 +22,9 @@ public class Meeting extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pin_id")
     private Pin pin;
+
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
+    private List<UserMeeting> userMeetingList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private MCategory category;
