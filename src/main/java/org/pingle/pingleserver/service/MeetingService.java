@@ -35,7 +35,6 @@ public class MeetingService {
                         .startAt(request.startAt())
                         .endAt(request.endAt())
                         .build());
-
     }
 
     public ParticipantsResponse getParticipants(Long meetingId) {
@@ -43,5 +42,14 @@ public class MeetingService {
                 .orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
         List<UserMeeting> userMeetings = userMeetingRepository.findAllByMeeting(meeting);
         return ParticipantsResponse.of(userMeetings);
+    }
+
+    @Transactional
+    public void deleteMeeting(Long userId, Long meetingId) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
+        UserMeeting userMeeting = userMeetingRepository.findByUserIdAndMeeting(userId, meeting).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
+        if(userMeeting.getMeetingRole().getValue().equals("participants"))
+            throw new CustomException(ErrorMessage.PERMISSION_DENIED);
+        meetingRepository.delete(meeting);
     }
 }
