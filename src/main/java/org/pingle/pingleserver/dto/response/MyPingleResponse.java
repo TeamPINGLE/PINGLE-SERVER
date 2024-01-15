@@ -26,7 +26,7 @@ public record MyPingleResponse(Long id, MCategory category, String name, String 
                 .name(meeting.getName())
                 .ownerName(ownerName)
                 .location(meeting.getPin().getName())
-                .dDay(createDDay(meeting.getStartAt()))
+                .dDay(createDDay(meeting.getStartAt(), meeting.getEndAt()))
                 .date(getDateFromDateTime(meeting.getStartAt()))
                 .startAt(getTimeFromDateTime(meeting.getStartAt()))
                 .endAt(getTimeFromDateTime(meeting.getEndAt()))
@@ -36,14 +36,15 @@ public record MyPingleResponse(Long id, MCategory category, String name, String 
                 .build();
     }
 
-    private static String createDDay(LocalDateTime startAt) {
+    private static String createDDay(LocalDateTime startAt, LocalDateTime endAt) {
         LocalDate startDate = startAt.toLocalDate();
-        if(ChronoUnit.DAYS.between(startDate, LocalDate.now()) > 0)
+        if(LocalDateTime.now().isAfter(endAt)) //현재가 이후면 참
             return DONE;
         if(ChronoUnit.DAYS.between(startDate, LocalDate.now()) == 0)
             return DDAY;
         return DDAYPREFIX + ChronoUnit.DAYS.between(startDate, LocalDate.now());//12일 13일 -> 1
     }
+
     private static String getDateFromDateTime(LocalDateTime localDateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return localDateTime.format(formatter);
