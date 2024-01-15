@@ -32,6 +32,7 @@ public enum ErrorMessage {
     EMPTY_PRINCIPAL(HttpStatus.UNAUTHORIZED, "내부적으로 유저 정보를 받는데 실패했습니다"),
     // Permission Denied 403
     GROUP_PERMISSION_DENIED(HttpStatus.FORBIDDEN, "해당 사용자는 그룹에 속해 있지 않습니다."),
+    PERMISSION_DENIED(HttpStatus.FORBIDDEN, "권한이 없습니다"),
     // Not Found Error 404
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 리소스가 존재하지 않습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
