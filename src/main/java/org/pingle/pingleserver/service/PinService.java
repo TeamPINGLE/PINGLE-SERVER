@@ -116,12 +116,18 @@ public class PinService {
 
         if (category == null) {
             pins = pinRepository.findPinsAndTimeBefore(teamId);
-            return pins.stream().map(PinResponse::ofWithoutCategory).toList();
+            return pins.stream().map(pin -> {
+                return PinResponse.of(
+                        pin,
+                        meetingRepository.findFirstByPinIdAndStartAtAfterOrderByStartAtAsc(pin.getId(), LocalDateTime.now())
+                                .map(Meeting::getCategory).orElse(MCategory.OTHERS),
+                        meetingRepository.countMeetingsForPinWithoutCategory(pin.getId()));
+            }).toList();
         }
 
         pins = pinRepository.findPinsWithCategoryAndTimeBefore(teamId, category);
         return pins.stream()
-                .map(pin -> PinResponse.ofWithCategory(pin, category, meetingRepository.countMeetingsForPin(pin.getId(), category))).toList();
+                .map(pin -> PinResponse.of(pin, category, meetingRepository.countMeetingsForPinWithCategory(pin.getId(), category))).toList();
     }
 
     public List<MeetingResponse> getMeetings(Long pinId, Long userId, MCategory category){
