@@ -19,11 +19,10 @@ import org.pingle.pingleserver.repository.MeetingRepository;
 import org.pingle.pingleserver.repository.PinRepository;
 import org.pingle.pingleserver.repository.TeamRepository;
 import org.pingle.pingleserver.repository.UserMeetingRepository;
+import org.pingle.pingleserver.utils.TimeUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -50,8 +49,8 @@ public class PinService {
     public List<MeetingResponse> getMeetingsDetail(Long userId, Long pinId, MCategory category) {
         Pin pin = pinRepository.findById(pinId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
         Comparator<Meeting> comparator = Comparator.comparing(Meeting::getStartAt);
-        List<Meeting> meetingList = pin.getMeetings();
-        meetingList.sort(comparator);//핀의 모든 미팅을 시간순으로 정렬
+        List<Meeting> meetingList = pin.getMeetingList();
+        meetingList.sort(comparator);
         List<MeetingResponse> responseList = new ArrayList<>();
         if(category == null) {
             for (Meeting meeting : meetingList) {
@@ -59,11 +58,11 @@ public class PinService {
                         .id(meeting.getId())
                         .category(meeting.getCategory())
                         .name(meeting.getName())
-                        .ownerName(getOwnerName(meeting))//만든사람
+                        .ownerName(getOwnerName(meeting))
                         .location(pin.getName())
-                        .date(getDateFromDateTime(meeting.getStartAt()))//meeting start 날짜 parsing
-                        .startAt(getTimeFromDateTime(meeting.getStartAt()))//start 시간 parsing
-                        .endAt(getTimeFromDateTime(meeting.getEndAt()))//end 시간 parsing
+                        .date(TimeUtil.getDateFromDateTime(meeting.getStartAt()))
+                        .startAt(TimeUtil.getTimeFromDateTime(meeting.getStartAt()))
+                        .endAt(TimeUtil.getTimeFromDateTime(meeting.getEndAt()))
                         .maxParticipants(meeting.getMaxParticipants())
                         .curParticipants(getCurParticipants(meeting))
                         .isParticipating(isParticipating(userId, meeting))
@@ -73,18 +72,18 @@ public class PinService {
             }
             return responseList;
         }
-        // 및 카테고리에 포함한 것만
+
         for (Meeting meeting : meetingList) {
             if(meeting.getCategory().getValue().equals(category.getValue())) {
                 responseList.add(MeetingResponse.builder()
                         .id(meeting.getId())
                         .category(meeting.getCategory())
                         .name(meeting.getName())
-                        .ownerName(getOwnerName(meeting))//만든사람
+                        .ownerName(getOwnerName(meeting))
                         .location(pin.getName())
-                        .date(getDateFromDateTime(meeting.getStartAt()))//meeting start 날짜 parsing
-                        .startAt(getTimeFromDateTime(meeting.getStartAt()))//start 시간 parsing
-                        .endAt(getTimeFromDateTime(meeting.getEndAt()))//end 시간 parsing
+                        .date(TimeUtil.getDateFromDateTime(meeting.getStartAt()))
+                        .startAt(TimeUtil.getTimeFromDateTime(meeting.getStartAt()))
+                        .endAt(TimeUtil.getTimeFromDateTime(meeting.getEndAt()))
                         .maxParticipants(meeting.getMaxParticipants())
                         .curParticipants(getCurParticipants(meeting))
                         .isParticipating(isParticipating(userId, meeting))
@@ -94,7 +93,6 @@ public class PinService {
             }
         }
         return responseList;
-
     }
 
     @Transactional
@@ -124,7 +122,6 @@ public class PinService {
                         meetingRepository.countMeetingsForPinWithoutCategory(pin.getId()));
             }).toList();
         }
-
         pins = pinRepository.findPinsWithCategoryAndTimeBefore(teamId, category);
         return pins.stream()
                 .map(pin -> PinResponse.of(pin, category, meetingRepository.countMeetingsForPinWithCategory(pin.getId(), category))).toList();
@@ -141,8 +138,6 @@ public class PinService {
         return meetings.stream()
                 .map(meeting -> MeetingResponse.of(meeting, getOwnerName(meeting), getCurParticipants(meeting),
                         isParticipating(userId, meeting), isOwner(userId, meeting.getId()))).toList();
-
-
     }
   
     private boolean checkMeetingsCategoryOfPin(Pin pin, MCategory category) {
@@ -166,15 +161,6 @@ public class PinService {
 
     private boolean isParticipating(Long userId, Meeting meeting) {
         return userMeetingRepository.existsByUserIdAndMeeting(userId, meeting);
-    }
-
-    private String getDateFromDateTime(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return localDateTime.format(formatter);
-    }
-    private String getTimeFromDateTime(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        return localDateTime.format(formatter);
     }
 
     private boolean isOwner(Long userId, Long meetingId) {

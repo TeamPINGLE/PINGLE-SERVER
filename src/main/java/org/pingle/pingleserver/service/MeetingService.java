@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.domain.Meeting;
 import org.pingle.pingleserver.domain.Pin;
 import org.pingle.pingleserver.domain.UserMeeting;
+import org.pingle.pingleserver.domain.enums.MRole;
 import org.pingle.pingleserver.dto.request.MeetingRequest;
+import org.pingle.pingleserver.dto.response.MyPingleResponse;
 import org.pingle.pingleserver.dto.response.ParticipantsResponse;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
 import org.pingle.pingleserver.exception.CustomException;
@@ -13,6 +15,8 @@ import org.pingle.pingleserver.repository.UserMeetingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,6 +48,26 @@ public class MeetingService {
         return ParticipantsResponse.of(userMeetings);
     }
 
+    public List<MyPingleResponse> getMyPingles(Long userId, Long teamId, boolean participation) {
+        List<Meeting> myMeetings = new ArrayList<>();
+        if(participation) // 참여 완려 -> 이미 시작 startAt이 현재보다
+            myMeetings =  meetingRepository.findParticipatedMeetingsForUsersInTeamOrderByTime(userId, teamId, LocalDateTime.now());
+        if(!participation) // 참여하지 않은 것 == 나중에 일어날 것 -> startat이 현재보다 늦음
+            myMeetings = meetingRepository.findUnparticipatedMeetingsForUsersInTeamOrderByTime(userId, teamId, LocalDateTime.now());
+        return myMeetings.stream()
+                .map(meeting -> MyPingleResponse.of(meeting, getOwnerName(meeting), isOwner(userId, meeting.getId()))).toList();
+    }
+
+    private String getOwnerName(Meeting meeting) {
+        UserMeeting userMeeting = userMeetingRepository.findByMeetingAndMeetingRole(meeting, MRole.OWNER)
+                .orElseThrow(() ->new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
+        return userMeeting.getUser().getName();
+    }
+    
+    private boolean isOwner(Long userId, Long meetingId) {
+        return userMeetingRepository.existsByUserIdAndMeetingIdAndMeetingRole(userId, meetingId, MRole.OWNER);
+    }
+  
     @Transactional
     public void deleteMeeting(Long userId, Long meetingId) {
         Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
@@ -53,3 +77,4 @@ public class MeetingService {
         meetingRepository.delete(meeting);
     }
 }
+
