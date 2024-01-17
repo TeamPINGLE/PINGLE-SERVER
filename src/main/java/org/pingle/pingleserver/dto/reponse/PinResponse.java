@@ -8,10 +8,13 @@ import java.util.Comparator;
 import java.util.List;
 
 public record PinResponse(Long id, Double x, Double y, MCategory category, int meetingCount) {
+    public static PinResponse of(Pin pin, MCategory category, int count) {
+        return new PinResponse(pin.getId(),pin.getPoint().getX(), pin.getPoint().getY(),
+                category, count);
+    }
     public static PinResponse ofWithNoFilter(Pin pin) {
         return new PinResponse(pin.getId(),pin.getPoint().getX(), pin.getPoint().getY(),
                 getMostRecentMeetingCategoryOfPin(pin), getMeetingCount(pin));
-
     }
     public static PinResponse ofWithFilter(Pin pin, MCategory mCategory) {
         return new PinResponse(pin.getId(),pin.getPoint().getX(), pin.getPoint().getY(),
@@ -20,17 +23,17 @@ public record PinResponse(Long id, Double x, Double y, MCategory category, int m
     }
     private static MCategory getMostRecentMeetingCategoryOfPin (Pin pin) {
         Comparator<Meeting> comparator = Comparator.comparing(Meeting::getStartAt);
-        List<Meeting> meetingList = pin.getMeetingList();
+        List<Meeting> meetingList = pin.getMeetings();
         meetingList.sort(comparator);
         return meetingList.get(0).getCategory();
     }
 
     private static int getMeetingCount(Pin pin) {
-        return pin.getMeetingList().size();
+        return pin.getMeetings().size();
     }
     private static int getMeetingCountWithFilter(Pin pin, MCategory category) {
         int count = 0;
-        List<Meeting> meetings = pin.getMeetingList();
+        List<Meeting> meetings = pin.getMeetings();
         for(Meeting meeting : meetings) {
             if(meeting.getCategory().getValue().equals(category.getValue()))
                 count++;

@@ -52,6 +52,11 @@ public class MeetingController {
     @GetMapping("/{meetingId}/participants")
     public ApiResponse<ParticipantsResponse> getMeetingParticipants (@PathVariable("meetingId") Long meetingId) {
         return ApiResponse.success(SuccessMessage.OK, meetingService.getParticipants(meetingId));
+    }
 
+    @DeleteMapping("/{meetingId}")
+    public ApiResponse<?> deleteMeeting(@UserId Long userId, @PathVariable("meetingId") Long meetingId) {
+        meetingService.deleteMeeting(userId, meetingId);
+        return ApiResponse.success(SuccessMessage.OK);
     }
 }

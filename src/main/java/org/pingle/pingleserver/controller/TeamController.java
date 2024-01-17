@@ -1,6 +1,7 @@
 package org.pingle.pingleserver.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.dto.common.ApiResponse;
@@ -22,7 +23,7 @@ public class TeamController {
     private final TeamService teamService;
 
     @GetMapping
-    public ApiResponse<List<TeamSearchResultResponse>> searchTeams(@RequestParam String name){
+    public ApiResponse<List<TeamSearchResultResponse>> searchTeams(@NotBlank @RequestParam String name){
         return ApiResponse.success(SuccessMessage.OK,teamService.searchTeams(name));
     }
 

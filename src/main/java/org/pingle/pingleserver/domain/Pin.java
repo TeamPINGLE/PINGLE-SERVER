@@ -21,7 +21,7 @@ public class Pin extends BaseTimeEntity {
     private Team team;
 
     @OneToMany(mappedBy = "pin")
-    private List<Meeting> meetingList;
+    private List<Meeting> meetings;
 
     @Embedded
     private Point point;

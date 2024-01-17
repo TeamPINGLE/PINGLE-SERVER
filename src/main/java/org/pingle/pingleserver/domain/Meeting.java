@@ -23,7 +23,7 @@ public class Meeting extends BaseTimeEntity {
     @JoinColumn(name = "pin_id")
     private Pin pin;
 
-    @OneToMany(mappedBy = "meeting")
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
     private List<UserMeeting> userMeetingList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

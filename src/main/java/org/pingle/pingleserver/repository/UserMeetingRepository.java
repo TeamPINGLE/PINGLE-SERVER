@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface UserMeetingRepository extends JpaRepository<UserMeeting, Long> {
     Optional<UserMeeting> findByMeetingAndMeetingRole(Meeting meeting, MRole role);
+    Optional<UserMeeting> findByUserIdAndMeeting(Long userId, Meeting meeting);
     List<UserMeeting> findAllByMeeting(Meeting meeting);
     boolean existsByUserIdAndMeeting(Long userId, Meeting meeting);
     Optional<UserMeeting> findByUserIdAndMeetingId(Long userId, Long MeetingId);
