@@ -23,6 +23,7 @@ import org.pingle.pingleserver.utils.TimeUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -141,7 +142,7 @@ public class PinService {
     }
   
     private boolean checkMeetingsCategoryOfPin(Pin pin, MCategory category) {
-        List<Meeting> meetingList = pin.getMeetings();
+        List<Meeting> meetingList = pin.getMeetingList();
         for(Meeting meeting : meetingList) {
             if(meeting.getCategory().getValue().equals(category.getValue()))
                 return true;

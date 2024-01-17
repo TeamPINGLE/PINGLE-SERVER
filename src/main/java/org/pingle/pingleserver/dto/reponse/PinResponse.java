@@ -23,17 +23,17 @@ public record PinResponse(Long id, Double x, Double y, MCategory category, int m
     }
     private static MCategory getMostRecentMeetingCategoryOfPin (Pin pin) {
         Comparator<Meeting> comparator = Comparator.comparing(Meeting::getStartAt);
-        List<Meeting> meetingList = pin.getMeetings();
+        List<Meeting> meetingList = pin.getMeetingList();
         meetingList.sort(comparator);
         return meetingList.get(0).getCategory();
     }
 
     private static int getMeetingCount(Pin pin) {
-        return pin.getMeetings().size();
+        return pin.getMeetingList().size();
     }
     private static int getMeetingCountWithFilter(Pin pin, MCategory category) {
         int count = 0;
-        List<Meeting> meetings = pin.getMeetings();
+        List<Meeting> meetings = pin.getMeetingList();
         for(Meeting meeting : meetings) {
             if(meeting.getCategory().getValue().equals(category.getValue()))
                 count++;
