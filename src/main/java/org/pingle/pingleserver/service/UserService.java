@@ -66,7 +66,7 @@ public class UserService {
         userMeetings.forEach(userMeeting -> {
             if (userMeeting.getMeeting().getStartAt().isAfter(LocalDateTime.now())){
                 if (userMeeting.getMeetingRole().equals(MRole.OWNER)){
-                    deleteOwnerMeeting(userMeeting);
+                    meetingRepository.delete(userMeeting.getMeeting());
                 } else {
                     userMeetingRepository.delete(userMeeting);
                 }
@@ -74,10 +74,10 @@ public class UserService {
         });
     }
 
-    private void deleteOwnerMeeting(UserMeeting userMeeting){
-        Meeting meeting = userMeeting.getMeeting();
-        List<UserMeeting> userMeetings = userMeetingRepository.findAllByMeeting(meeting);
-        userMeetingRepository.deleteAll(userMeetings);
-        meetingRepository.delete(meeting);
-    }
+//    private void deleteOwnerMeeting(UserMeeting userMeeting){
+//        Meeting meeting = userMeeting.getMeeting();
+//        List<UserMeeting> userMeetings = userMeetingRepository.findAllByMeeting(meeting);
+//        userMeetingRepository.deleteAll(userMeetings);
+//        meetingRepository.delete(meeting);
+//    }
 }
