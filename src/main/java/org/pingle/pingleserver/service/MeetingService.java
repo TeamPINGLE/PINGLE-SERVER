@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -58,10 +59,13 @@ public class MeetingService {
                 .map(meeting -> MyPingleResponse.of(meeting, getOwnerName(meeting), isOwner(userId, meeting.getId()))).toList();
     }
 
-    private String getOwnerName(Meeting meeting) {
-        UserMeeting userMeeting = userMeetingRepository.findByMeetingAndMeetingRole(meeting, MRole.OWNER)
-                .orElseThrow(() ->new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
-        return userMeeting.getUser().getName();
+    public String getOwnerName(Meeting meeting){
+        Optional<UserMeeting> userMeeting = userMeetingRepository.findByMeetingAndMeetingRole(meeting, MRole.OWNER);
+        if (userMeeting.isPresent()) {
+            return userMeeting.get().getUser().getValidName();
+        } else {
+            return "(알 수 없음)";
+        }
     }
     
     private boolean isOwner(Long userId, Long meetingId) {

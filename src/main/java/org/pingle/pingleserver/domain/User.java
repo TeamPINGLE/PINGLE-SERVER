@@ -55,6 +55,11 @@ public class User extends BaseTimeEntity  {
         this.refreshToken = refreshToken;
     }
 
+    public String getValidName() {
+        if (this.isDeleted) return "(알 수 없음)";
+        return this.name;
+    }
+
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
