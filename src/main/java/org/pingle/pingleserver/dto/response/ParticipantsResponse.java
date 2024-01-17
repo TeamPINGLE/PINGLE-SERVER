@@ -10,7 +10,8 @@ public record ParticipantsResponse(
 ) {
     public static ParticipantsResponse of(List<UserMeeting> userMeetings) {
         Collections.sort(userMeetings);
-        List<String> participantNames = userMeetings.stream().map(userMeeting -> userMeeting.getUser().getName()).toList();
+        List<String> participantNames = userMeetings.stream().map(userMeeting ->
+                userMeeting.getUser().getValidName()).toList();
         return new ParticipantsResponse(participantNames);
     }
 }

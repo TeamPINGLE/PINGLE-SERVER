@@ -62,11 +62,7 @@ public class MeetingService {
     public String getOwnerName(Meeting meeting){
         Optional<UserMeeting> userMeeting = userMeetingRepository.findByMeetingAndMeetingRole(meeting, MRole.OWNER);
         if (userMeeting.isPresent()) {
-            if (userMeeting.get().getUser().isDeleted()) {
-                return "(알 수 없음)";
-            } else {
-                return userMeeting.get().getUser().getName();
-            }
+            return userMeeting.get().getUser().getValidName();
         } else {
             return "(알 수 없음)";
         }
