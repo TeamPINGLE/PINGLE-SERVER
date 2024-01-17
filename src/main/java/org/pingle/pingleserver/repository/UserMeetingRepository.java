@@ -1,6 +1,7 @@
 package org.pingle.pingleserver.repository;
 
 import org.pingle.pingleserver.domain.Meeting;
+import org.pingle.pingleserver.domain.User;
 import org.pingle.pingleserver.domain.UserMeeting;
 import org.pingle.pingleserver.domain.enums.MRole;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,5 @@ public interface UserMeetingRepository extends JpaRepository<UserMeeting, Long> 
     boolean existsByUserIdAndMeeting(Long userId, Meeting meeting);
     Optional<UserMeeting> findByUserIdAndMeetingId(Long userId, Long MeetingId);
     boolean existsByUserIdAndMeetingIdAndMeetingRole(Long userId, Long meetingId, MRole role);
+    List<UserMeeting> findAllByUser(User user);
 }

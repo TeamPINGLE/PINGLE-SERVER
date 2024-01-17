@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.pingle.pingleserver.domain.Meeting;
 import org.pingle.pingleserver.domain.Pin;
 import org.pingle.pingleserver.domain.Team;
-import org.pingle.pingleserver.domain.UserMeeting;
 import org.pingle.pingleserver.domain.enums.MCategory;
 import org.pingle.pingleserver.domain.enums.MRole;
 import org.pingle.pingleserver.dto.reponse.MeetingResponse;
@@ -34,6 +33,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class PinService {
 
+    private final MeetingService meetingService;
     private final PinRepository pinRepository;
     private final TeamRepository teamRepository;
     private final MeetingRepository meetingRepository;
@@ -59,7 +59,7 @@ public class PinService {
                         .id(meeting.getId())
                         .category(meeting.getCategory())
                         .name(meeting.getName())
-                        .ownerName(getOwnerName(meeting))
+                        .ownerName(meetingService.getOwnerName(meeting))
                         .location(pin.getName())
                         .date(TimeUtil.getDateFromDateTime(meeting.getStartAt()))
                         .startAt(TimeUtil.getTimeFromDateTime(meeting.getStartAt()))
@@ -80,7 +80,7 @@ public class PinService {
                         .id(meeting.getId())
                         .category(meeting.getCategory())
                         .name(meeting.getName())
-                        .ownerName(getOwnerName(meeting))
+                        .ownerName(meetingService.getOwnerName(meeting))
                         .location(pin.getName())
                         .date(TimeUtil.getDateFromDateTime(meeting.getStartAt()))
                         .startAt(TimeUtil.getTimeFromDateTime(meeting.getStartAt()))
@@ -137,7 +137,7 @@ public class PinService {
             meetings = meetingRepository.findByPinIdAndCategoryAndStartAtAfterOrderByStartAt(pinId, category, LocalDateTime.now());
         }
         return meetings.stream()
-                .map(meeting -> MeetingResponse.of(meeting, getOwnerName(meeting), getCurParticipants(meeting),
+                .map(meeting -> MeetingResponse.of(meeting, meetingService.getOwnerName(meeting), getCurParticipants(meeting),
                         isParticipating(userId, meeting), isOwner(userId, meeting.getId()))).toList();
     }
   
@@ -148,12 +148,6 @@ public class PinService {
                 return true;
         }
         return false;
-    }
-
-    private String getOwnerName(Meeting meeting) {
-        UserMeeting userMeeting = userMeetingRepository.findByMeetingAndMeetingRole(meeting, MRole.OWNER)
-                .orElseThrow(() ->new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
-        return userMeeting.getUser().getName();
     }
 
     private int getCurParticipants(Meeting meeting) {
