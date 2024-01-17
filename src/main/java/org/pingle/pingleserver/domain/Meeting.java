@@ -25,6 +25,7 @@ public class Meeting extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "meeting")
     private List<UserMeeting> userMeetingList = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private MCategory category;
 

@@ -29,8 +29,6 @@ public class UserController {
         return ApiResponse.success(SuccessMessage.OK, userService.getUserInfo(userId));
     }
 
-    //1. 유저 id를 통해 유저 번개 리스트를 받는다.
-    //2. 각각의 유저 번개 리스트에 대해 번개를 찾아가느 쿼리가 나간다.
     @GetMapping("/me/meetings")
     public ApiResponse<List<MyPingleResponse>> getMyPingles (@GUserId Long userId, @NotNull @RequestParam boolean participation,
                                                              @RequestHeader(Constants.TEAM_ID)Long teamId) {

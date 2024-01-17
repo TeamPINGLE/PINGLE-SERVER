@@ -4,10 +4,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import org.pingle.pingleserver.domain.Meeting;
 import org.pingle.pingleserver.domain.enums.MCategory;
+import org.pingle.pingleserver.utils.TimeUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 @Builder(access = AccessLevel.PRIVATE)
@@ -19,7 +19,7 @@ public record MyPingleResponse(Long id, MCategory category, String name, String 
     private static final String DDAY = "D-Day";
     private static final String DONE = "Done";
 
-    public static MyPingleResponse of(Meeting meeting, String ownerName, boolean isOwner) {//유저아이디랑 번개 아이디가 필요.
+    public static MyPingleResponse of(Meeting meeting, String ownerName, boolean isOwner) {
         return MyPingleResponse.builder()
                 .id(meeting.getId())
                 .category(meeting.getCategory())
@@ -27,9 +27,9 @@ public record MyPingleResponse(Long id, MCategory category, String name, String 
                 .ownerName(ownerName)
                 .location(meeting.getPin().getName())
                 .dDay(createDDay(meeting.getStartAt(), meeting.getEndAt()))
-                .date(getDateFromDateTime(meeting.getStartAt()))
-                .startAt(getTimeFromDateTime(meeting.getStartAt()))
-                .endAt(getTimeFromDateTime(meeting.getEndAt()))
+                .date(TimeUtil.getDateFromDateTime(meeting.getStartAt()))
+                .startAt(TimeUtil.getTimeFromDateTime(meeting.getStartAt()))
+                .endAt(TimeUtil.getTimeFromDateTime(meeting.getEndAt()))
                 .maxParticipants(meeting.getMaxParticipants())
                 .curParticipants(meeting.getUserMeetingList().size())
                 .isOwner(isOwner)
@@ -43,14 +43,5 @@ public record MyPingleResponse(Long id, MCategory category, String name, String 
         if(ChronoUnit.DAYS.between(startDate, LocalDate.now()) == 0)
             return DDAY;
         return DDAYPREFIX + ChronoUnit.DAYS.between(startDate, LocalDate.now());//12일 13일 -> 1
-    }
-
-    private static String getDateFromDateTime(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return localDateTime.format(formatter);
-    }
-    private static String getTimeFromDateTime(LocalDateTime localDateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        return localDateTime.format(formatter);
     }
 }
