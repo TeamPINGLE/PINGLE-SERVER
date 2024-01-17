@@ -13,7 +13,7 @@ import java.time.temporal.ChronoUnit;
 @Builder(access = AccessLevel.PRIVATE)
 public record MyPingleResponse(Long id, MCategory category, String name, String ownerName, String location,
                                String dDay, String date, String startAt, String endAt, int maxParticipants,
-                               int curParticipants, boolean isOwner) {
+                               int curParticipants, boolean isOwner, String chatLink) {
 
     private static final String DDAYPREFIX = "D";
     private static final String DDAY = "D-Day";
@@ -33,6 +33,7 @@ public record MyPingleResponse(Long id, MCategory category, String name, String 
                 .maxParticipants(meeting.getMaxParticipants())
                 .curParticipants(meeting.getUserMeetingList().size())
                 .isOwner(isOwner)
+                .chatLink(meeting.getChatLink())
                 .build();
     }
 
