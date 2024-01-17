@@ -43,6 +43,9 @@ public record MyPingleResponse(Long id, MCategory category, String name, String 
             return DONE;
         if(ChronoUnit.DAYS.between(startDate, LocalDate.now()) == 0)
             return DDAY;
-        return DDAYPREFIX + ChronoUnit.DAYS.between(startDate, LocalDate.now());//12일 13일 -> 1
+        if(-8 < ChronoUnit.DAYS.between(startDate, LocalDate.now()) &&
+                ChronoUnit.DAYS.between(startDate, LocalDate.now()) < 0)
+            return DDAYPREFIX + ChronoUnit.DAYS.between(startDate, LocalDate.now());//12일 13일 -> 1
+        return "";
     }
 }
