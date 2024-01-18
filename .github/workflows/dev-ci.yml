@@ -21,7 +21,7 @@ jobs:
       - name: create secret config file
         run: |
           cd src/main/resources
-          echo "${{ secrets.APPLICATION }}" > ./application-dev.yml
+          echo "${{ secrets.APPLICATION_DEV }}" > ./application-dev.yml
 
       - name: build with gradle
         run: |
