@@ -12,6 +12,7 @@ import org.pingle.pingleserver.dto.type.ErrorMessage;
 import org.pingle.pingleserver.exception.CustomException;
 import org.pingle.pingleserver.repository.MeetingRepository;
 import org.pingle.pingleserver.repository.UserMeetingRepository;
+import org.pingle.pingleserver.utils.SlackUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,7 @@ public class MeetingService {
 
     @Transactional
     public Meeting createMeeting(MeetingRequest request, Pin pin) {
-        return meetingRepository.save(
+        Meeting savedMeeting = meetingRepository.save(
                 Meeting.builder()
                         .pin(pin)
                         .category(request.category())
@@ -40,6 +41,8 @@ public class MeetingService {
                         .startAt(request.startAt())
                         .endAt(request.endAt())
                         .build());
+        SlackUtil.alertCreateMeeting(request.location(), request.name());
+        return savedMeeting;
     }
 
     public ParticipantsResponse getParticipants(Long meetingId) {
