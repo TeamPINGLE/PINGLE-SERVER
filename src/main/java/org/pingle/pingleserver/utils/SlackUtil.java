@@ -3,17 +3,11 @@ package org.pingle.pingleserver.utils;
 import com.slack.api.Slack;
 import com.slack.api.webhook.Payload;
 import com.slack.api.webhook.WebhookResponse;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-@Slf4j
-@Service
-@RequiredArgsConstructor
 public class SlackUtil {
 
     @Value("${slack.webhook.team-created}")
@@ -34,7 +28,6 @@ public class SlackUtil {
             response = slack.send(userJoinWebhookUrl, payload);
             return response;
         } catch (IOException e) {
-                log.error(e.getMessage(), e);
                 throw new RuntimeException(e);
             }
     }
@@ -47,7 +40,6 @@ public class SlackUtil {
             response = slack.send(teamCreatedWebhookUrl, payload);
             return response;
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }
@@ -60,7 +52,6 @@ public class SlackUtil {
             response = slack.send(meetingCreatedWebhookUrl, payload);
             return response;
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }
@@ -75,7 +66,6 @@ public class SlackUtil {
             response = slack.send(serverErrorWebhookUrl, payload);
             return response;
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }
