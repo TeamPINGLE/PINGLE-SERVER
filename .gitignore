@@ -39,6 +39,7 @@ out/
 application-secret.properties
 application-local.yml
 application-dev.yml
+application-prod.yml
 
 ### Java ###
 # Compiled class file
