@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.annotation.UserId;
+import org.pingle.pingleserver.controller.swagger.TeamApi;
 import org.pingle.pingleserver.dto.common.ApiResponse;
 import org.pingle.pingleserver.dto.request.TeamRegisterRequest;
 import org.pingle.pingleserver.dto.response.SelectedTeamResponse;
@@ -18,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("v1/teams")
 @RequiredArgsConstructor
-public class TeamController {
+public class TeamController implements TeamApi {
 
     private final TeamService teamService;
 

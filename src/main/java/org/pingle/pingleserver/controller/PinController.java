@@ -3,6 +3,7 @@ package org.pingle.pingleserver.controller;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.annotation.UserId;
+import org.pingle.pingleserver.controller.swagger.PinApi;
 import org.pingle.pingleserver.domain.enums.MCategory;
 import org.pingle.pingleserver.dto.common.ApiResponse;
 import org.pingle.pingleserver.dto.reponse.MeetingResponse;
@@ -16,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/teams/{teamId}/pins")
 @RequiredArgsConstructor
-public class PinController {
+public class PinController implements PinApi {
 
     private final PinService pinService;
 
