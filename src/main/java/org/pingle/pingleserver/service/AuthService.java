@@ -15,6 +15,7 @@ import org.pingle.pingleserver.oauth.service.AppleLoginService;
 import org.pingle.pingleserver.oauth.service.KakaoLoginService;
 import org.pingle.pingleserver.repository.UserRepository;
 import org.pingle.pingleserver.utils.JwtUtil;
+import org.pingle.pingleserver.utils.SlackUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,6 +79,7 @@ public class AuthService {
                     .role(URole.USER)
                     .build();
             userRepository.save(newUser);
+            SlackUtil.alertUserSignUp(newUser.getName(), newUser.getEmail());
         }
 
         return userRepository.findByProviderAndSerialIdAndIsDeleted(provider, socialInfo.serialId(), false)
