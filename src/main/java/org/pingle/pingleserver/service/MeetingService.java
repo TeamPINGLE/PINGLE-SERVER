@@ -26,6 +26,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class MeetingService {
 
+    private final SlackUtil slackUtil;
     private final MeetingRepository meetingRepository;
     private final UserMeetingRepository userMeetingRepository;
 
@@ -41,7 +42,7 @@ public class MeetingService {
                         .startAt(request.startAt())
                         .endAt(request.endAt())
                         .build());
-        SlackUtil.alertCreateMeeting(request.location(), request.name());
+        slackUtil.alertCreateMeeting(request.location(), request.name());
         return savedMeeting;
     }
 

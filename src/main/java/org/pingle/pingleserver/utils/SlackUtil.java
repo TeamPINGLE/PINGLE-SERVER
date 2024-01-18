@@ -2,69 +2,62 @@ package org.pingle.pingleserver.utils;
 
 import com.slack.api.Slack;
 import com.slack.api.webhook.Payload;
-import com.slack.api.webhook.WebhookResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Arrays;
 
+@Component
 public class SlackUtil {
 
     @Value("${slack.webhook.team-created}")
-    private static String teamCreatedWebhookUrl;
+    private String teamCreatedWebhookUrl;
     @Value("${slack.webhook.user-join}")
-    private static String userJoinWebhookUrl;
+    private String userJoinWebhookUrl;
     @Value("${slack.webhook.meeting-created}")
-    private static String meetingCreatedWebhookUrl;
+    private String meetingCreatedWebhookUrl;
     @Value("${slack.webhook.server-error}")
-    private static String serverErrorWebhookUrl;
+    private String serverErrorWebhookUrl;
 
-    public static WebhookResponse alertUserSignUp (String name, String email) {
+    public void alertUserSignUp (String name, String email) {
         try {
             String text = name + "(" + email + ")" +"님이 가입했습니다.";
-            WebhookResponse response;
             Slack slack = Slack.getInstance();
             Payload payload = Payload.builder().text(text).build();
-            response = slack.send(userJoinWebhookUrl, payload);
-            return response;
+            slack.send(userJoinWebhookUrl, payload);
         } catch (IOException e) {
                 throw new RuntimeException(e);
             }
     }
-    public static WebhookResponse alertCreateTeam(String teamName) {
+    public void alertCreateTeam(String teamName) {
         try {
             String text = "팀 : " + teamName + "이 생성되었습니다.";
-            WebhookResponse response;
             Slack slack = Slack.getInstance();
             Payload payload = Payload.builder().text(text).build();
-            response = slack.send(teamCreatedWebhookUrl, payload);
-            return response;
+            slack.send(teamCreatedWebhookUrl, payload);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public static WebhookResponse alertCreateMeeting(String location, String meetingName) {
+    public void alertCreateMeeting(String location, String meetingName) {
         try {
             String text = location + "에서" + meetingName + "번개가 생성되었습니다.";
-            WebhookResponse response;
             Slack slack = Slack.getInstance();
             Payload payload = Payload.builder().text(text).build();
-            response = slack.send(meetingCreatedWebhookUrl, payload);
-            return response;
+            slack.send(meetingCreatedWebhookUrl, payload);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public static WebhookResponse alertError(Exception exception) {
+    public void alertError(Exception exception) {
         try {
             String text = exception.getClass().getName() + "  "
                     + exception.getMessage() + "\n"
                     + Arrays.toString(exception.getStackTrace());
-            WebhookResponse response;
             Slack slack = Slack.getInstance();
             Payload payload = Payload.builder().text(text).build();
-            response = slack.send(serverErrorWebhookUrl, payload);
-            return response;
+            slack.send(serverErrorWebhookUrl, payload);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
