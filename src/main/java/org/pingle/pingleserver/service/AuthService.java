@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final JwtUtil jwtUtil;
+    private final SlackUtil slackUtil;
     private final AppleLoginService appleLoginService;
     private final KakaoLoginService kakaoLoginService;
     private final UserRepository userRepository;
@@ -79,7 +80,7 @@ public class AuthService {
                     .role(URole.USER)
                     .build();
             userRepository.save(newUser);
-            SlackUtil.alertUserSignUp(newUser.getName(), newUser.getEmail());
+            slackUtil.alertUserSignUp(newUser.getName(), newUser.getEmail());
         }
 
         return userRepository.findByProviderAndSerialIdAndIsDeleted(provider, socialInfo.serialId(), false)
