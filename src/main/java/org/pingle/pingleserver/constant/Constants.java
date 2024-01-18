@@ -12,5 +12,17 @@ public class Constants {
     public static final String APPLE_ISSUER_NAME = "iss";
     public static final String APPLE_AUDIENCE_NAME = "aud";
     public static final String APPLE_SUBJECT_NAME = "sub";
+    public static final String[] AUTH_WHITELIST = {
+            "/v1/auth/login",
+            "/v1/auth/reissue",
+            "/actuator/health",
+            "/test/**",
+            "/qr/**",
+
+            "/v3/api-docs.html",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+    };
 
 }
