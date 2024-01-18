@@ -51,9 +51,9 @@ public class MeetingService {
 
     public List<MyPingleResponse> getMyPingles(Long userId, Long teamId, boolean participation) {
         List<Meeting> myMeetings = new ArrayList<>();
-        if(participation) // 참여 완려 -> 이미 시작 startAt이 현재보다
+        if(participation) // 참여 완려 -> 이미 시작 endAt 이 현재보다 빠름
             myMeetings =  meetingRepository.findParticipatedMeetingsForUsersInTeamOrderByTime(userId, teamId, LocalDateTime.now());
-        if(!participation) // 참여하지 않은 것 == 나중에 일어날 것 -> startat이 현재보다 늦음
+        if(!participation) // 참여하지 않은 것 == 나중에 일어날 것 -> endAt이 현재보다 늦음
             myMeetings = meetingRepository.findUnparticipatedMeetingsForUsersInTeamOrderByTime(userId, teamId, LocalDateTime.now());
         return myMeetings.stream()
                 .map(meeting -> MyPingleResponse.of(meeting, getOwnerName(meeting), isOwner(userId, meeting.getId()))).toList();

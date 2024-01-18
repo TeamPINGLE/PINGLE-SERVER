@@ -17,7 +17,7 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
             "JOIN UserMeeting um ON um.meeting = m " +
             "WHERE um.user.id = :userId " +
             "   AND (:teamId IS NULL OR t.id = :teamId) " +
-            "   AND m.startAt > :currentDateTime " +
+            "   AND m.endAt > :currentDateTime " +
             "ORDER BY m.startAt ASC") 
     List<Meeting> findUnparticipatedMeetingsForUsersInTeamOrderByTime(Long userId, Long teamId, @Param("currentDateTime")LocalDateTime currentDateTime);
 
@@ -27,7 +27,7 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
             "JOIN UserMeeting um ON um.meeting = m " +
             "WHERE um.user.id = :userId " +
             "   AND (:teamId IS NULL OR t.id = :teamId) " +
-            "   AND m.startAt <= :currentDateTime " +
+            "   AND m.endAt <= :currentDateTime " +
             "ORDER BY m.startAt DESC") 
     List<Meeting> findParticipatedMeetingsForUsersInTeamOrderByTime(Long userId, Long teamId, @Param("currentDateTime")LocalDateTime currentDateTime);
     
