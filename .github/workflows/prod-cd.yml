@@ -2,7 +2,7 @@ name: CD
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "main" ]
 
 jobs:
   CI:
@@ -21,7 +21,7 @@ jobs:
       - name: create secret config file
         run: |
           cd src/main/resources
-          echo "${{ secrets.APPLICATION }}" > ./application-dev.yml
+          echo "${{ secrets.APPLICATION_PROD }}" > ./application-prod.yml
 
       - name: build with gradle
         run: |
@@ -41,9 +41,9 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile-prod
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPONAME }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROD_REPONAME }}
 
   CD:
     needs: [CI]
@@ -53,9 +53,9 @@ jobs:
       - name: Docker Image Pull and Container Run
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.RELEASE_SERVER_HOST }}
-          username: ${{ secrets.RELEASE_SERVER_USERNAME }}
-          key: ${{ secrets.RELEASE_SERVER_KEY }}
+          host: ${{ secrets.PROD_SERVER_HOST }}
+          username: ${{ secrets.PROD_SERVER_USERNAME }}
+          key: ${{ secrets.PROD_SERVER_KEY }}
           script: |
             cd ~
             ./deploy.sh

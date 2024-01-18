@@ -11,3 +11,9 @@ spring:
     active: dev
 
 ---
+
+spring:
+  profiles:
+    active: prod
+
+---
