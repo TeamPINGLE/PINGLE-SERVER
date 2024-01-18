@@ -1,6 +1,7 @@
 package org.pingle.pingleserver.security.config;
 
 import lombok.RequiredArgsConstructor;
+import org.pingle.pingleserver.constant.Constants;
 import org.pingle.pingleserver.security.filter.CustomJwtAuthenticationEntryPoint;
 import org.pingle.pingleserver.security.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
@@ -20,21 +21,10 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomJwtAuthenticationEntryPoint customJwtAuthenticationEntryPoint;
 
-    private static final String[] AUTH_WHITELIST = {
-            "/v1/auth/login",
-            "/v1/auth/reissue",
-            "/actuator/health",
-            "/test/**",
-            "/qr/**",
-
-            "/api-docs.html",
-            "/api-docs/**",
-            "/swagger-ui/**"
-    };
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .cors(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
@@ -44,7 +34,7 @@ public class SecurityConfig {
                         exceptionHandlingConfigurer.authenticationEntryPoint(customJwtAuthenticationEntryPoint))
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
-                                .requestMatchers(AUTH_WHITELIST).permitAll()
+                                .requestMatchers(Constants.AUTH_WHITELIST).permitAll()
                                 .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

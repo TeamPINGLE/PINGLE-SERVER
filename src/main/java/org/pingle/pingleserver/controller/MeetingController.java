@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.annotation.GUserId;
 import org.pingle.pingleserver.constant.Constants;
+import org.pingle.pingleserver.controller.swagger.MeetingApi;
 import org.pingle.pingleserver.domain.Meeting;
 import org.pingle.pingleserver.domain.Pin;
 import org.pingle.pingleserver.dto.common.ApiResponse;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/meetings")
 @RequiredArgsConstructor
-public class MeetingController {
+public class MeetingController implements MeetingApi {
 
     private final MeetingService meetingService;
     private final UserMeetingService userMeetingService;

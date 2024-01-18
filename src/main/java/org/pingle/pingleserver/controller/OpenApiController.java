@@ -1,6 +1,7 @@
 package org.pingle.pingleserver.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.pingle.pingleserver.controller.swagger.OpenApi;
 import org.pingle.pingleserver.dto.common.ApiResponse;
 import org.pingle.pingleserver.dto.reponse.LocationResponse;
 import org.pingle.pingleserver.dto.type.SuccessMessage;
@@ -15,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1")
 @RequiredArgsConstructor
-public class OpenApiController {
+public class OpenApiController implements OpenApi {
 
     private final NaverUtil naverUtil;
 

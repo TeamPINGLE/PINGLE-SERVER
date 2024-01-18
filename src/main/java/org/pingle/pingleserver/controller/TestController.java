@@ -3,6 +3,7 @@ package org.pingle.pingleserver.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pingle.pingleserver.annotation.UserId;
+import org.pingle.pingleserver.controller.swagger.TeamApi;
 import org.pingle.pingleserver.domain.User;
 import org.pingle.pingleserver.dto.response.JwtTokenResponse;
 import org.pingle.pingleserver.exception.CustomException;

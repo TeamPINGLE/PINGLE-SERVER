@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.constant.Constants;
+import org.pingle.pingleserver.controller.swagger.AuthApi;
 import org.pingle.pingleserver.dto.common.ApiResponse;
 import org.pingle.pingleserver.dto.request.LoginRequest;
 import org.pingle.pingleserver.dto.response.JwtTokenResponse;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthApi {
 
     private final AuthService authService;
 

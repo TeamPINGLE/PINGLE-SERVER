@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.annotation.GUserId;
 import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.constant.Constants;
+import org.pingle.pingleserver.controller.swagger.UserApi;
 import org.pingle.pingleserver.dto.common.ApiResponse;
 import org.pingle.pingleserver.dto.response.MyPingleResponse;
 import org.pingle.pingleserver.dto.response.UserInfoResponse;
@@ -19,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements UserApi {
 
     private final MeetingService meetingService;
     private final UserService userService;
