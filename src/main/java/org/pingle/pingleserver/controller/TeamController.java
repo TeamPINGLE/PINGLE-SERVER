@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.controller.swagger.TeamApi;
 import org.pingle.pingleserver.dto.common.ApiResponse;
+import org.pingle.pingleserver.dto.reponse.TeamNameDuplicatedResponse;
 import org.pingle.pingleserver.dto.request.TeamRegisterRequest;
 import org.pingle.pingleserver.dto.response.SelectedTeamResponse;
 import org.pingle.pingleserver.dto.response.TeamRegisterResponse;
@@ -39,5 +40,10 @@ public class TeamController implements TeamApi {
             @PathVariable Long teamId,
             @Valid @RequestBody TeamRegisterRequest request){
         return ApiResponse.success(SuccessMessage.OK, teamService.registerTeam(userId, teamId, request));
+    }
+
+    @GetMapping("/check-name")
+    public ApiResponse<TeamNameDuplicatedResponse> checkTeamName(@NotBlank @RequestParam String name){
+        return ApiResponse.success(SuccessMessage.OK, teamService.checkTeamName(name));
     }
 }

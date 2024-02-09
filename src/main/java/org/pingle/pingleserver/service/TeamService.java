@@ -5,6 +5,7 @@ import org.pingle.pingleserver.domain.Team;
 import org.pingle.pingleserver.domain.User;
 import org.pingle.pingleserver.domain.UserTeam;
 import org.pingle.pingleserver.domain.enums.TRole;
+import org.pingle.pingleserver.dto.reponse.TeamNameDuplicatedResponse;
 import org.pingle.pingleserver.dto.request.TeamRegisterRequest;
 import org.pingle.pingleserver.dto.response.SelectedTeamResponse;
 import org.pingle.pingleserver.dto.response.TeamDetailDto;
@@ -65,5 +66,9 @@ public class TeamService {
                 .build();
         userTeamRepository.save(newUserTeam);
         return TeamRegisterResponse.of(team.getId(), team.getName());
+    }
+
+    public TeamNameDuplicatedResponse checkTeamName(String name) {
+        return new TeamNameDuplicatedResponse(!teamRepository.existsByNameIgnoreCase(name));
     }
 }
