@@ -78,6 +78,9 @@ public class TeamService {
     @Transactional
     public TeamCreationResponse createTeam(Long userId, TeamCreationRequest request) {
         User user = userRepository.findByIdOrThrow(userId);
+        if (teamRepository.existsByNameIgnoreCase(request.name())) {
+            throw new CustomException(ErrorMessage.DUPLICATED_TEAM_NAME);
+        }
 
         String code = generateCode();
         Team team = Team.builder()
