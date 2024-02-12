@@ -6,10 +6,7 @@ import org.pingle.pingleserver.domain.User;
 import org.pingle.pingleserver.domain.UserTeam;
 import org.pingle.pingleserver.domain.enums.TRole;
 import org.pingle.pingleserver.dto.request.TeamRegisterRequest;
-import org.pingle.pingleserver.dto.response.SelectedTeamResponse;
-import org.pingle.pingleserver.dto.response.TeamDetailDto;
-import org.pingle.pingleserver.dto.response.TeamRegisterResponse;
-import org.pingle.pingleserver.dto.response.TeamSearchResultResponse;
+import org.pingle.pingleserver.dto.response.*;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
 import org.pingle.pingleserver.exception.CustomException;
 import org.pingle.pingleserver.repository.TeamRepository;
@@ -19,6 +16,7 @@ import org.pingle.pingleserver.utils.CustomSearchUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,5 +63,23 @@ public class TeamService {
                 .build();
         userTeamRepository.save(newUserTeam);
         return TeamRegisterResponse.of(team.getId(), team.getName());
+    }
+
+    public List<MyTeamResponse> getMyTeams(Long userId) {
+        User user = userRepository.findByIdAndIsDeletedOrThrow(userId, false);
+        List<MyTeamResponse> teams = new ArrayList<>();
+        for (UserTeam userTeam : user.getUserTeams()) {
+            Team team = userTeam.getTeam();
+            Long teamId = team.getId();
+            TeamDetailDto teamDetail = teamRepository.findTeamDetailsWithCounts(teamId)
+                    .orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
+            MyTeamResponse myTeam = MyTeamResponse.of(
+                    teamDetail.team(),
+                    teamDetail.meetingCount(),
+                    teamDetail.participantCount(),
+                    userTeam.getTeamRole().equals(TRole.OWNER));
+            teams.add(myTeam);
+        }
+        return teams;
     }
 }
