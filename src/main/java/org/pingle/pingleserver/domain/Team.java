@@ -2,6 +2,7 @@ package org.pingle.pingleserver.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.pingle.pingleserver.domain.enums.TKeyword;
@@ -23,10 +24,19 @@ public class Team extends BaseTimeEntity {
 
     private String code;
 
+    private String email;
+
     @Enumerated(EnumType.STRING)
     private TKeyword keyword;
 
     @OneToMany(mappedBy = "team")
     private List<UserTeam> userTeams;
 
+    @Builder
+    public Team(String name, String email, String code, TKeyword keyword) {
+        this.name = name;
+        this.email = email;
+        this.code = code;
+        this.keyword = keyword;
+    }
 }
