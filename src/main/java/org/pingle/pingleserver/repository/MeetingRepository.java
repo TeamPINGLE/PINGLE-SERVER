@@ -42,4 +42,21 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
     List<Meeting> findByPinIdAndCategoryAndStartAtAfterOrderByStartAt(Long pinId, MCategory category, LocalDateTime currentTime);
 
     List<Meeting> findByPinIdAndStartAtAfterOrderByStartAt(Long pinId, LocalDateTime currentTime);
+
+    @Query("SELECT m " +
+            "FROM Meeting m JOIN FETCH m.pin p join fetch m.userMeetingList um join FETCH um.user join fetch p.team t " +
+            "WHERE t.id = :teamId AND m.startAt > CURRENT_TIMESTAMP " +
+            "AND (m.category = :category OR :category IS NULL) " +  //+
+            "AND (m.name LIKE concat('%' ,COALESCE(:q, ''), '%')  OR p.name LIKE concat('%' ,COALESCE(:q, ''), '%') OR p.address.address LIKE concat('%' ,COALESCE(:q, ''), '%')) " +
+            "ORDER BY m.createdAt DESC")
+    List<Meeting> findMeetingsByParameterOOrderByCreatedAt(String q, MCategory category, Long teamId);
+
+    @Query("SELECT m " +
+            "FROM Meeting m JOIN FETCH m.pin p join fetch m.userMeetingList um join FETCH um.user join fetch p.team t " +
+            "WHERE t.id = :teamId AND m.startAt > CURRENT_TIMESTAMP " +
+            "AND (m.category = :category OR :category IS NULL) " +
+            "AND (m.name LIKE concat('%' ,COALESCE(:q, ''), '%')  OR p.name LIKE concat('%' ,COALESCE(:q, ''), '%') OR p.address.address LIKE concat('%' ,COALESCE(:q, ''), '%')) " +
+            "ORDER BY m.startAt ASC")
+    List<Meeting> findMeetingsByParameterOOrderByStartAt(String q, MCategory category, Long teamId);
+
 }

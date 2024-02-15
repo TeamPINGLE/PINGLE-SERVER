@@ -9,9 +9,12 @@ import org.pingle.pingleserver.constant.Constants;
 import org.pingle.pingleserver.controller.swagger.MeetingApi;
 import org.pingle.pingleserver.domain.Meeting;
 import org.pingle.pingleserver.domain.Pin;
+import org.pingle.pingleserver.domain.enums.MCategory;
+import org.pingle.pingleserver.domain.enums.SearchOrder;
 import org.pingle.pingleserver.dto.common.ApiResponse;
 import org.pingle.pingleserver.dto.request.MeetingRequest;
 import org.pingle.pingleserver.dto.response.ParticipantsResponse;
+import org.pingle.pingleserver.dto.response.SearchResponse;
 import org.pingle.pingleserver.dto.type.SuccessMessage;
 import org.pingle.pingleserver.service.MeetingService;
 import org.pingle.pingleserver.service.PinService;
@@ -60,4 +63,14 @@ public class MeetingController implements MeetingApi {
         meetingService.deleteMeeting(userId, meetingId);
         return ApiResponse.success(SuccessMessage.OK);
     }
+
+    @GetMapping("/search")
+    public ApiResponse<SearchResponse> getSearchResult(@UserId Long userId,
+                                                       @RequestParam(required = false) String q,
+                                                       @RequestParam(required = false) MCategory category,
+                                                       @RequestParam Long teamId,
+                                                       @RequestParam SearchOrder order) {
+        return ApiResponse.success(SuccessMessage.OK, meetingService.searchMeetings(userId , q, category, teamId, order));
+    }
 }
+
