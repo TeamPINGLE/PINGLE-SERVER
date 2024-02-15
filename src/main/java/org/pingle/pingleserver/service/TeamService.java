@@ -85,6 +85,7 @@ public class TeamService {
             teams.add(myTeam);
         }
         return teams;
+    }
 
     public TeamNameDuplicatedResponse checkTeamName(String name) {
         return new TeamNameDuplicatedResponse(!teamRepository.existsByNameIgnoreCase(name));
