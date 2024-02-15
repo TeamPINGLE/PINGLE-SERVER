@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.pingle.pingleserver.domain.enums.TKeyword;
 
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,6 +28,9 @@ public class Team extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private TKeyword keyword;
+
+    @OneToMany(mappedBy = "team")
+    private List<UserTeam> userTeams;
 
     @Builder
     public Team(String name, String email, String code, TKeyword keyword) {
