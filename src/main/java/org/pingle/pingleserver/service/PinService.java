@@ -12,6 +12,8 @@ import org.pingle.pingleserver.dto.reponse.PinResponse;
 import org.pingle.pingleserver.domain.Address;
 import org.pingle.pingleserver.domain.Point;
 import org.pingle.pingleserver.dto.request.MeetingRequest;
+import org.pingle.pingleserver.dto.response.RankingIndividualResponse;
+import org.pingle.pingleserver.dto.response.RankingResponse;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
 import org.pingle.pingleserver.exception.CustomException;
 import org.pingle.pingleserver.repository.MeetingRepository;
@@ -160,5 +162,11 @@ public class PinService {
 
     private boolean isOwner(Long userId, Long meetingId) {
         return userMeetingRepository.existsByUserIdAndMeetingIdAndMeetingRole(userId, meetingId, MRole.OWNER);
+    }
+
+    public RankingResponse getRankings(Long teamId) {
+        if(!teamRepository.existsById(teamId)) throw new CustomException(ErrorMessage.RESOURCE_NOT_FOUND);
+        List<RankingIndividualResponse> response = pinRepository.findPinsWithMeetingsBeforeCurrentTimestampAndTeamId(teamId);
+        return RankingResponse.of(response);
     }
 }
