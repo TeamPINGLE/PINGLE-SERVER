@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public enum TKeyword {
-    CIRCLE("연합 동아리"),
-    SCHOOL_CLUB("교내 동아리"),
+    CIRCLE("연합동아리"),
+    SCHOOL_CLUB("교내동아리"),
     MIDDLE_SCHOOL("중학교"),
     HIGH_SCHOOL("고등학교"),
     UNIVERSITY("대학교"),
@@ -19,9 +19,4 @@ public enum TKeyword {
     PRIVATE_MEETING("사모임");
 
     private final String value;
-
-    @Override
-    public String toString() {
-        return value;
-    }
 }
