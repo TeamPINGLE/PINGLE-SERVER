@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.controller.swagger.TeamApi;
 import org.pingle.pingleserver.dto.common.ApiResponse;
+import org.pingle.pingleserver.dto.reponse.KeywordResponse;
 import org.pingle.pingleserver.dto.reponse.TeamCreationResponse;
 import org.pingle.pingleserver.dto.reponse.TeamNameDuplicatedResponse;
 import org.pingle.pingleserver.dto.request.TeamCreationRequest;
@@ -53,4 +54,10 @@ public class TeamController implements TeamApi {
     public ApiResponse<TeamCreationResponse> createTeam(@UserId Long userId, @Valid @RequestBody TeamCreationRequest request){
         return ApiResponse.success(SuccessMessage.OK, teamService.createTeam(userId, request));
     }
+
+    @GetMapping("/keywords")
+    public ApiResponse<List<KeywordResponse>> getKeywords(){
+        return ApiResponse.success(SuccessMessage.OK, teamService.getKeywords());
+    }
+
 }
