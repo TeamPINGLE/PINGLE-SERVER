@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.domain.Team;
 import org.pingle.pingleserver.domain.User;
 import org.pingle.pingleserver.domain.UserTeam;
+import org.pingle.pingleserver.domain.enums.TKeyword;
 import org.pingle.pingleserver.domain.enums.TRole;
+import org.pingle.pingleserver.dto.reponse.KeywordResponse;
 import org.pingle.pingleserver.dto.reponse.TeamCreationResponse;
 import org.pingle.pingleserver.dto.reponse.TeamNameDuplicatedResponse;
 import org.pingle.pingleserver.dto.request.TeamCreationRequest;
@@ -19,11 +21,8 @@ import org.pingle.pingleserver.utils.CustomSearchUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -115,6 +114,12 @@ public class TeamService {
         userTeamRepository.save(userTeam);
 
         return TeamCreationResponse.of(team);
+    }
+
+    public List<KeywordResponse> getKeywords() {
+        return Arrays.stream(TKeyword.values())
+                .map(KeywordResponse::of)
+                .collect(Collectors.toList());
     }
 
     private String generateCode() {

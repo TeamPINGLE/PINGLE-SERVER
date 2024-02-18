@@ -7,7 +7,7 @@ public record MyTeamResponse (
     public static MyTeamResponse of(Team team, Long meetingCount, Long participantCount, boolean isOwner) {
         return new MyTeamResponse(
                 team.getId(),
-                team.getKeyword().toString(),
+                team.getKeyword().getValue(),
                 team.getName(),
                 meetingCount,
                 participantCount,
