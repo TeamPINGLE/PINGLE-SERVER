@@ -17,7 +17,7 @@ import java.util.List;
 public interface PinApi {
 
     @Operation(summary = "핀 목록 조회", description = "핀 목록을 조회한다.")
-    ApiResponse<List<PinResponse>> getPins(Long teamId, MCategory category);
+    ApiResponse<List<PinResponse>> getPins(Long teamId, MCategory category, String q);
 
     @Operation(summary = "핀에 속한 미팅 목록 조회", description = "핀에 속한 미팅 목록을 조회한다.")
     ApiResponse<List<MeetingResponse>> getMeetings(@UserId Long userId,
