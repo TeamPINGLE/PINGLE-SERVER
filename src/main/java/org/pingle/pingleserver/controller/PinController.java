@@ -1,6 +1,5 @@
 package org.pingle.pingleserver.controller;
 
-import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.pingle.pingleserver.annotation.UserId;
 import org.pingle.pingleserver.controller.swagger.PinApi;
@@ -33,7 +32,7 @@ public class PinController implements PinApi {
     public ApiResponse<List<MeetingResponse>> getMeetings(@UserId Long userId,
                                                           @PathVariable String teamId,
                                                           @PathVariable Long pinId,
-                                                          @Nullable @RequestParam MCategory category) {
+                                                          @RequestParam(required = false) MCategory category) {
         return ApiResponse.success(SuccessMessage.OK, pinService.getMeetings(pinId, userId, category));
     }
 
