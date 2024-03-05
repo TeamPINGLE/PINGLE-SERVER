@@ -14,6 +14,7 @@ import org.pingle.pingleserver.oauth.service.AppleLoginService;
 import org.pingle.pingleserver.repository.MeetingRepository;
 import org.pingle.pingleserver.repository.UserMeetingRepository;
 import org.pingle.pingleserver.repository.UserRepository;
+import org.pingle.pingleserver.repository.UserTeamRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class UserService {
     private final AppleLoginService appleLoginService;
     private final MeetingRepository meetingRepository;
     private final UserMeetingRepository userMeetingRepository;
+    private final UserTeamRepository userTeamRepository;
 
     public UserInfoResponse getUserInfo(Long userId) {
         User user = userRepository.findByIdAndIsDeletedOrThrow(userId, false);
@@ -58,7 +60,7 @@ public class UserService {
         if (hasAdminRole) {
             throw new CustomException(ErrorMessage.GROUP_OWNER_DELETION_DENIED);
         }
-        user.getUserTeams().clear();
+        userTeamRepository.deleteAll(user.getUserTeams());
     }
 
     private void leaveMeetings (User user){
