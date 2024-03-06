@@ -44,7 +44,7 @@ public class UserMeetingService {
 
     @Transactional
     public Long participateMeeting(Long userId, Long meetingId) {
-        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
+        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(ErrorMessage.MEETING_NOT_FOUND));
         if(isParticipating(userId, meeting))
             throw new CustomException(ErrorMessage.RESOURCE_CONFLICT);
         if((getCurParticipants(meeting)) >= meeting.getMaxParticipants())
