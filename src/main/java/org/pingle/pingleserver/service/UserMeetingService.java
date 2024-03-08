@@ -56,7 +56,7 @@ public class UserMeetingService {
     @Transactional
     public Long cancelMeeting(Long userId, Long meetingId) {
         UserMeeting userMeeting = userMeetingRepository.findByUserIdAndMeetingId(userId, meetingId)
-                .orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorMessage.USERMEETING_NOT_FOUND));
         if(userMeetingRepository.existsByUserIdAndMeetingIdAndMeetingRole(userId, meetingId, MRole.OWNER))
             throw new CustomException(ErrorMessage.BAD_REQUEST);
         userMeetingRepository.delete(userMeeting);
