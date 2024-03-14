@@ -28,13 +28,16 @@ public class NaverUtil {
     private String naverLocationSearchUrl;
 
     public List<LocationResponse> getLocationInfo(String location) {
-
-        NaverLocationResponse naverLocationResponse = locationSearch(NaverLocationRequest.of(location));
-
+        NaverLocationResponse naverLocationResponse;
+        try {
+             naverLocationResponse = locationSearch(NaverLocationRequest.of(location));
+        } catch (RuntimeException e) {
+            return List.of();
+        }
         return convertResponse(naverLocationResponse);
     }
 
-    private NaverLocationResponse locationSearch(NaverLocationRequest request) {
+    private NaverLocationResponse locationSearch(NaverLocationRequest request) throws RuntimeException {
         URI uri = UriComponentsBuilder
                 .fromUriString(naverLocationSearchUrl)
                 .queryParams(request.toMap())
@@ -50,10 +53,14 @@ public class NaverUtil {
         HttpEntity<Object> httpEntity = new HttpEntity<>(httpHeaders);
         ParameterizedTypeReference<NaverLocationResponse> responseType = new ParameterizedTypeReference<>() {
         };
+        ResponseEntity<NaverLocationResponse> responseEntity;
 
-        ResponseEntity<NaverLocationResponse> responseEntity = new RestTemplate()
-                .exchange(uri, HttpMethod.GET, httpEntity, responseType);
-
+        try {
+            responseEntity = new RestTemplate()
+                    .exchange(uri, HttpMethod.GET, httpEntity, responseType);
+        } catch (Exception e) {
+            throw new RuntimeException("Naver API 호출 중 오류가 발생했습니다.");
+        }
         return responseEntity.getBody();
     }
 
