@@ -44,7 +44,7 @@ public class UserMeetingService {
 
     @Transactional
     public Long participateMeeting(Long userId, Long meetingId) {
-        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
+        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(ErrorMessage.MEETING_NOT_FOUND));
         if(isParticipating(userId, meeting))
             throw new CustomException(ErrorMessage.RESOURCE_CONFLICT);
         if((getCurParticipants(meeting)) >= meeting.getMaxParticipants())
@@ -56,7 +56,7 @@ public class UserMeetingService {
     @Transactional
     public Long cancelMeeting(Long userId, Long meetingId) {
         UserMeeting userMeeting = userMeetingRepository.findByUserIdAndMeetingId(userId, meetingId)
-                .orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorMessage.USERMEETING_NOT_FOUND));
         if(userMeetingRepository.existsByUserIdAndMeetingIdAndMeetingRole(userId, meetingId, MRole.OWNER))
             throw new CustomException(ErrorMessage.BAD_REQUEST);
         userMeetingRepository.delete(userMeeting);

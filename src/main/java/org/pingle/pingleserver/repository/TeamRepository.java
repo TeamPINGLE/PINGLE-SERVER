@@ -25,4 +25,6 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
             "WHERE t.id = :teamId " +
             "GROUP BY t")
     Optional<TeamDetailDto> findTeamDetailsWithCounts(Long teamId);
+
+    boolean existsByNameIgnoreCase(String name);
 }

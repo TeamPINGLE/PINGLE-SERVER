@@ -27,6 +27,7 @@ public enum ErrorMessage {
     MISSING_REQUIRED_HEADER(HttpStatus.BAD_REQUEST, "필수 헤더가 누락되었습니다."),
     MISSING_REQUIRED_PARAMETER(HttpStatus.BAD_REQUEST, "필수 파라미터가 누락되었습니다."),
     GROUP_OWNER_DELETION_DENIED(HttpStatus.BAD_REQUEST, "그룹 장은 탈퇴할 수 없습니다."),
+    DUPLICATED_TEAM_NAME(HttpStatus.BAD_REQUEST, "중복된 팀 이름입니다."),
     // Authorization Error 401
     TOKEN_MALFORMED_ERROR(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     UNAUTHORIZED_ERROR(HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았거나 유효하지 않습니다."),
@@ -38,6 +39,8 @@ public enum ErrorMessage {
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 리소스가 존재하지 않습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     NOT_FOUND_END_POINT(HttpStatus.NOT_FOUND, "존재하지 않는 API입니다."),
+    MEETING_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 번개입니다"),
+    USERMEETING_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 유저미팅입니다." ),
     // Method Not Allowed Error 405
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 메소드입니다."),
     // Conflict Error 409

@@ -12,19 +12,18 @@ import org.pingle.pingleserver.dto.reponse.PinResponse;
 import org.pingle.pingleserver.domain.Address;
 import org.pingle.pingleserver.domain.Point;
 import org.pingle.pingleserver.dto.request.MeetingRequest;
+import org.pingle.pingleserver.dto.response.RankingIndividualResponse;
+import org.pingle.pingleserver.dto.response.RankingResponse;
 import org.pingle.pingleserver.dto.type.ErrorMessage;
 import org.pingle.pingleserver.exception.CustomException;
 import org.pingle.pingleserver.repository.MeetingRepository;
 import org.pingle.pingleserver.repository.PinRepository;
 import org.pingle.pingleserver.repository.TeamRepository;
 import org.pingle.pingleserver.repository.UserMeetingRepository;
-import org.pingle.pingleserver.utils.TimeUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Slf4j
@@ -38,63 +37,6 @@ public class PinService {
     private final TeamRepository teamRepository;
     private final MeetingRepository meetingRepository;
     private final UserMeetingRepository userMeetingRepository;
-
-    public List<PinResponse> getPinsFilterByCategory(Long teamId, MCategory category) {
-        Team team = teamRepository.findByIdOrThrow(teamId);
-        List<Pin> pinList = pinRepository.findAllByTeam(team);
-        if(category == null) return pinList.stream().map(PinResponse::ofWithNoFilter).toList();
-        return pinList.stream().filter(pin -> checkMeetingsCategoryOfPin(pin, category))
-                .map(pin -> PinResponse.ofWithFilter(pin, category)).toList();
-    }
-
-    public List<MeetingResponse> getMeetingsDetail(Long userId, Long pinId, MCategory category) {
-        Pin pin = pinRepository.findById(pinId).orElseThrow(() -> new CustomException(ErrorMessage.RESOURCE_NOT_FOUND));
-        Comparator<Meeting> comparator = Comparator.comparing(Meeting::getStartAt);
-        List<Meeting> meetingList = pin.getMeetingList();
-        meetingList.sort(comparator);
-        List<MeetingResponse> responseList = new ArrayList<>();
-        if(category == null) {
-            for (Meeting meeting : meetingList) {
-                responseList.add(MeetingResponse.builder()
-                        .id(meeting.getId())
-                        .category(meeting.getCategory())
-                        .name(meeting.getName())
-                        .ownerName(meetingService.getOwnerName(meeting))
-                        .location(pin.getName())
-                        .date(TimeUtil.getDateFromDateTime(meeting.getStartAt()))
-                        .startAt(TimeUtil.getTimeFromDateTime(meeting.getStartAt()))
-                        .endAt(TimeUtil.getTimeFromDateTime(meeting.getEndAt()))
-                        .maxParticipants(meeting.getMaxParticipants())
-                        .curParticipants(getCurParticipants(meeting))
-                        .isParticipating(isParticipating(userId, meeting))
-                        .chatLink(meeting.getChatLink())
-                        .isOwner(isOwner(userId, meeting.getId()))
-                        .build());
-            }
-            return responseList;
-        }
-
-        for (Meeting meeting : meetingList) {
-            if(meeting.getCategory().getValue().equals(category.getValue())) {
-                responseList.add(MeetingResponse.builder()
-                        .id(meeting.getId())
-                        .category(meeting.getCategory())
-                        .name(meeting.getName())
-                        .ownerName(meetingService.getOwnerName(meeting))
-                        .location(pin.getName())
-                        .date(TimeUtil.getDateFromDateTime(meeting.getStartAt()))
-                        .startAt(TimeUtil.getTimeFromDateTime(meeting.getStartAt()))
-                        .endAt(TimeUtil.getTimeFromDateTime(meeting.getEndAt()))
-                        .maxParticipants(meeting.getMaxParticipants())
-                        .curParticipants(getCurParticipants(meeting))
-                        .isParticipating(isParticipating(userId, meeting))
-                        .chatLink(meeting.getChatLink())
-                        .isOwner(isOwner(userId, meeting.getId()))
-                        .build());
-            }
-        }
-        return responseList;
-    }
 
     @Transactional
     public Pin verifyAndReturnPin(MeetingRequest request, Long groupId) {
@@ -110,22 +52,10 @@ public class PinService {
         return pinRepository.findByPointAndTeam(new Point(request.x(), request.y()), team);
     }
 
-    public List<PinResponse> getPins(Long teamId, MCategory category) {
-        List<Pin> pins;
-
-        if (category == null) {
-            pins = pinRepository.findPinsAndTimeBefore(teamId);
-            return pins.stream().map(pin -> {
-                return PinResponse.of(
-                        pin,
-                        meetingRepository.findFirstByPinIdAndStartAtAfterOrderByStartAtAsc(pin.getId(), LocalDateTime.now())
-                                .map(Meeting::getCategory).orElse(MCategory.OTHERS),
-                        meetingRepository.countMeetingsForPinWithoutCategory(pin.getId()));
-            }).toList();
-        }
-        pins = pinRepository.findPinsWithCategoryAndTimeBefore(teamId, category);
-        return pins.stream()
-                .map(pin -> PinResponse.of(pin, category, meetingRepository.countMeetingsForPinWithCategory(pin.getId(), category))).toList();
+    public List<PinResponse> getPins(Long teamId, MCategory category, String q) {
+        if (q!=null && q.isBlank()) throw new CustomException(ErrorMessage.BAD_REQUEST);
+        if (!teamRepository.existsById(teamId)) throw new CustomException(ErrorMessage.RESOURCE_NOT_FOUND);
+        return pinRepository.findPinsByTeamIdAndCategoryAndQ(teamId, category, q);
     }
 
     public List<MeetingResponse> getMeetings(Long pinId, Long userId, MCategory category){
@@ -140,15 +70,6 @@ public class PinService {
                 .map(meeting -> MeetingResponse.of(meeting, meetingService.getOwnerName(meeting), getCurParticipants(meeting),
                         isParticipating(userId, meeting), isOwner(userId, meeting.getId()))).toList();
     }
-  
-    private boolean checkMeetingsCategoryOfPin(Pin pin, MCategory category) {
-        List<Meeting> meetingList = pin.getMeetingList();
-        for(Meeting meeting : meetingList) {
-            if(meeting.getCategory().getValue().equals(category.getValue()))
-                return true;
-        }
-        return false;
-    }
 
     private int getCurParticipants(Meeting meeting) {
         return userMeetingRepository.findAllByMeeting(meeting).size();
@@ -160,5 +81,11 @@ public class PinService {
 
     private boolean isOwner(Long userId, Long meetingId) {
         return userMeetingRepository.existsByUserIdAndMeetingIdAndMeetingRole(userId, meetingId, MRole.OWNER);
+    }
+
+    public RankingResponse getRankings(Long teamId) {
+        if(!teamRepository.existsById(teamId)) throw new CustomException(ErrorMessage.RESOURCE_NOT_FOUND);
+        List<RankingIndividualResponse> response = pinRepository.findPinsWithMeetingsBeforeCurrentTimestampAndTeamId(teamId);
+        return RankingResponse.of(response);
     }
 }
