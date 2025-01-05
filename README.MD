@@ -25,3 +25,4 @@
 ## 🌀 ERD
 
 ![pingle](https://github.com/TeamPINGLE/PINGLE-SERVER/assets/74230343/ba6effe1-dd91-4ffe-8464-378094377d20)
+
