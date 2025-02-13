@@ -38,7 +38,7 @@ public class DatabaseLockManager implements LockManager {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, key);
             stmt.setInt(2, 3000);
-            stmt.executeQuery(); // 락 key 획득 시도, 무한 대기
+            stmt.executeQuery();
         } catch (SQLException e) {
             throw new CustomException(ErrorMessage.INTERNAL_SERVER_ERROR);
         }
@@ -52,7 +52,7 @@ public class DatabaseLockManager implements LockManager {
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, key);
-            stmt.executeQuery(); // 락 key 해제
+            stmt.executeQuery();
         } catch (SQLException e) {
             throw new CustomException(ErrorMessage.INTERNAL_SERVER_ERROR);
         }
