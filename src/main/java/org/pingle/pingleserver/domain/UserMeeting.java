@@ -9,6 +9,11 @@ import org.pingle.pingleserver.domain.enums.MRole;
 
 @Entity
 @Getter
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(name = "unique_user_meeting", columnNames = {"user_id", "meeting_id"})
+        }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserMeeting extends BaseTimeEntity implements Comparable<UserMeeting> {
 
