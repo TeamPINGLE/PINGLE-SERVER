@@ -44,10 +44,7 @@ public class DatabaseLockManager implements LockManager {
         }
     }
 
-    private void releaseLock(
-            final Connection connection,
-            final String key
-    ) {
+    private void releaseLock(final Connection connection, final String key) {
         String sql = "SELECT RELEASE_LOCK(?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
