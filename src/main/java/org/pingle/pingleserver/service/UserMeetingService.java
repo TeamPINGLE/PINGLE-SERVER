@@ -46,7 +46,8 @@ public class UserMeetingService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Long participateMeeting(Long userId, Long meetingId) {
         Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new CustomException(ErrorMessage.MEETING_NOT_FOUND));
-        validateParticipateCondition(userId, meeting);
+        if((getCurParticipants(meeting)) >= meeting.getMaxParticipants())
+            throw new CustomException(ErrorMessage.RESOURCE_CONFLICT);
         User user = userRepository.findByIdOrThrow(userId);
         Long participateId;
         try{
@@ -73,12 +74,5 @@ public class UserMeetingService {
 
     private boolean isParticipating(Long userId, Meeting meeting) {
         return userMeetingRepository.existsByUserIdAndMeeting(userId, meeting);
-    }
-
-    private void validateParticipateCondition(Long userId, Meeting meeting) {
-        if(isParticipating(userId, meeting))
-            throw new CustomException(ErrorMessage.RESOURCE_CONFLICT);
-        if((getCurParticipants(meeting)) >= meeting.getMaxParticipants())
-            throw new CustomException(ErrorMessage.RESOURCE_CONFLICT);
     }
 }
