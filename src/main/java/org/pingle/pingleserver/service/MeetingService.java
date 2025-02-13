@@ -1,6 +1,10 @@
 package org.pingle.pingleserver.service;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.pingle.pingleserver.domain.Meeting;
 import org.pingle.pingleserver.domain.Pin;
 import org.pingle.pingleserver.domain.UserMeeting;
@@ -20,12 +24,7 @@ import org.pingle.pingleserver.repository.UserMeetingRepository;
 import org.pingle.pingleserver.utils.SlackUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
